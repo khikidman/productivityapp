@@ -1,0 +1,55 @@
+# Xcode
+*.xcuserdata
+*.xcuserstate
+*.xcworkspace/xcuserdata
+DerivedData/
+build/
+*.xcuserdatad
+
+# Swift Package Manager
+/.swiftpm/
+/.build/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Xcode project file conflicts
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Playground
+timeline.xctimeline
+playground.xcworkspace
+
+# Misc
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+# Archive
+*.xcarchive
+
+# Symbolicate crash reports
+*.dSYM.zip
+*.dSYM
+
+# App Store Connect
+app-store/
+
+# Other IDEs
+.idea/
