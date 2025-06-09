@@ -1,0 +1,411 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 text,label\
+"Go for a 30-minute run",Fitness\
+"Lift weights at the gym",Fitness\
+"Do a full-body workout",Fitness\
+"Attend a spin class",Fitness\
+"Stretch after waking up",Fitness\
+"Do 20 push-ups",Fitness\
+"Practice yoga for flexibility",Fitness\
+"Swim laps for cardio",Fitness\
+"Do a leg day workout",Fitness\
+"Join a HIIT session",Fitness\
+"Go hiking",Fitness\
+"Bike around the neighborhood",Fitness\
+"Train abs for 10 minutes",Fitness\
+"Try a new chest workout",Fitness\
+"Take a brisk walk",Fitness\
+"Go rock climbing",Fitness\
+"Warm up before lifting",Fitness\
+"Hit the treadmill",Fitness\
+"Use the rowing machine",Fitness\
+"Work on pull-ups",Fitness\
+"Do squats and lunges",Fitness\
+"Bench press today",Fitness\
+"Try a CrossFit routine",Fitness\
+"Run sprints outside",Fitness\
+"Practice handstands",Fitness\
+"Join a boxing class",Fitness\
+"Stretch hamstrings and quads",Fitness\
+"Do a back workout",Fitness\
+"Practice tai chi",Fitness\
+"Climb stairs for 15 minutes",Fitness\
+"Jump rope for 10 minutes",Fitness\
+"Do an upper body circuit",Fitness\
+"Lift heavier weights today",Fitness\
+"Cool down after workout",Fitness\
+"Do bodyweight exercises",Fitness\
+"Try resistance band workouts",Fitness\
+"Go for a jog at sunset",Fitness\
+"Practice kettlebell swings",Fitness\
+"Follow a workout video",Fitness\
+"Do 3 sets of deadlifts",Fitness\
+"Ride a stationary bike",Fitness\
+"Join a pilates class",Fitness\
+"Train shoulders and arms",Fitness\
+"Do mobility drills",Fitness\
+"Work on core stability",Fitness\
+"Follow a push day plan",Fitness\
+"Go trail running",Fitness\
+"Do 5 pull-up sets",Fitness\
+"Run a mile without stopping",Fitness\
+"Take a recovery walk",Fitness\
+"Track my steps for the day",Fitness\
+"Take the stairs instead of the elevator",Fitness\
+"Complete a 7-minute workout",Fitness\
+"Stand up and stretch every hour",Fitness\
+"Do jumping jacks during study breaks",Fitness\
+"Walk 10,000 steps",Fitness\
+"Do wall sits while brushing teeth",Fitness\
+"Follow a beginner workout app",Fitness\
+"Do calf raises while cooking",Fitness\
+"Join a fitness challenge",Fitness\
+"Take an evening walk",Fitness\
+"Do five minutes of squats",Fitness\
+"Log my fitness activity",Fitness\
+"Set a new personal record",Fitness\
+"Monitor heart rate during exercise",Fitness\
+"Rest between strength sets",Fitness\
+"Improve my balance with single-leg stands",Fitness\
+"Foam roll sore muscles",Fitness\
+"Walk around the block",Fitness\
+"Stretch before bed",Fitness\
+"Stay active every hour",Fitness\
+"Try functional training",Fitness\
+"Dance for 10 minutes",Fitness\
+"Follow a home fitness routine",Fitness\
+"Do stair sprints",Fitness\
+"Try interval walking",Fitness\
+"Complete a body scan mobility test",Fitness\
+"Track calories burned",Fitness\
+"Do yoga sun salutations",Fitness\
+"Stretch my hip flexors",Fitness\
+"Improve my posture",Fitness\
+"Take a walk after lunch",Fitness\
+"Balance on one foot for 30 seconds",Fitness\
+"Try a new cardio machine",Fitness\
+"Stand while working for 20 minutes",Fitness\
+"Do five minutes of mountain climbers",Fitness\
+"Cool down with stretches",Fitness\
+"Add variety to my cardio",Fitness\
+"Rest on active recovery days",Fitness\
+"Check progress on fitness goals",Fitness\
+"Do dynamic warm-ups",Fitness\
+"Take a walk during a phone call",Fitness\
+"Stay hydrated during workouts",Fitness\
+"Focus on breathing while training",Fitness\
+"Work on joint mobility",Fitness\
+"Track body measurements",Fitness\
+"Plan my weekly workouts",Fitness\
+"Try a stretching routine",Fitness\
+"Spend 15 minutes foam rolling",Fitness\
+"Do a fitness test",Fitness\
+"Read a chapter of a book",Learning\
+"Watch a documentary",Learning\
+"Complete a module from an online course",Learning\
+"Study vocabulary words",Learning\
+"Listen to an educational podcast",Learning\
+"Write a journal summary of what I learned",Learning\
+"Practice coding problems",Learning\
+"Read a technical blog post",Learning\
+"Watch a YouTube video on science",Learning\
+"Take notes from a lecture",Learning\
+"Study flashcards",Learning\
+"Review previous notes",Learning\
+"Learn a new math concept",Learning\
+"Study a new language phrase",Learning\
+"Practice guitar scales",Learning\
+"Memorize historical dates",Learning\
+"Research a topic of interest",Learning\
+"Read about a famous figure",Learning\
+"Practice solving equations",Learning\
+"Review key concepts from class",Learning\
+"Write a summary of today\'92s learning",Learning\
+"Study for an upcoming exam",Learning\
+"Watch a TED talk",Learning\
+"Attend an online webinar",Learning\
+"Review a research paper",Learning\
+"Memorize key programming syntax",Learning\
+"Study physics formulas",Learning\
+"Review chemistry reactions",Learning\
+"Go through lecture slides",Learning\
+"Complete a quiz",Learning\
+"Do a practice test",Learning\
+"Read a nonfiction book",Learning\
+"Take handwritten notes",Learning\
+"Summarize a textbook chapter",Learning\
+"Rewatch lecture recordings",Learning\
+"Study computer science algorithms",Learning\
+"Learn a new software tool",Learning\
+"Do a deep dive on a topic",Learning\
+"Build a project from scratch",Learning\
+"Review flashcards before bed",Learning\
+"Read a scientific article",Learning\
+"Take Cornell-style notes",Learning\
+"Practice mental math",Learning\
+"Translate a paragraph from another language",Learning\
+"Practice speed reading",Learning\
+"Read a programming documentation",Learning\
+"Practice handwriting drills",Learning\
+"Memorize poetry",Learning\
+"Follow a Khan Academy lesson",Learning\
+"Explore an academic subreddit",Learning\
+"Use spaced repetition software",Learning\
+"Build an app to reinforce learning",Learning\
+"Teach a concept to someone",Learning\
+"Write a blog post on what I learned",Learning\
+"Practice technical interview questions",Learning\
+"Follow a reading list",Learning\
+"Write flashcards manually",Learning\
+"Practice pronunciation in a new language",Learning\
+"Explore a new field of study",Learning\
+"Attend a study group session",Learning\
+"Review lecture notes before sleep",Learning\
+"Take an online certification test",Learning\
+"Draw diagrams to explain a concept",Learning\
+"Create a mind map",Learning\
+"Study educational infographics",Learning\
+"Practice explaining complex ideas simply",Learning\
+"Build a small educational project",Learning\
+"Use Anki flashcards",Learning\
+"Organize my study space",Learning\
+"Write definitions in my own words",Learning\
+"Review my learning goals",Learning\
+"Try a new study method",Learning\
+"Memorize important quotes",Learning\
+"Rewrite class notes",Learning\
+"Do a Pomodoro study session",Learning\
+"Research how things work",Learning\
+"Explore a topic on Wikipedia",Learning\
+"Practice summarizing articles",Learning\
+"Relearn old material",Learning\
+"Test myself on weak topics",Learning\
+"Write a book review",Learning\
+"Study current events",Learning\
+"Learn a productivity technique",Learning\
+"Create a quiz for myself",Learning\
+"Compare two opposing theories",Learning\
+"Review missed exam questions",Learning\
+"Break down a complex subject",Learning\
+"Outline an essay",Learning\
+"Proofread a study paper",Learning\
+"Make a cheat sheet",Learning\
+"Use diagrams to study",Learning\
+"Join a MOOC class",Learning\
+"Ask ChatGPT to explain something",Learning\
+"Take a self-assessment quiz",Learning\
+"Use visual aids for learning",Learning\
+"Listen to audiobooks while walking",Learning\
+"Create a learning schedule",Learning\
+"Reflect on what I\'92ve learned",Learning\
+"Make connections between subjects",Learning\
+"Explore academic YouTube channels",Learning\
+"Check in with myself",Mental Health\
+"Take a break when I need one",Mental Health\
+"Go easy on myself today",Mental Health\
+"Spend time alone",Mental Health\
+"Turn off my phone for a bit",Mental Health\
+"Let myself feel things",Mental Health\
+"Get out of my head",Mental Health\
+"Log how I'm feeling",Mental Health\
+"Take time to breathe",Mental Health\
+"Give myself a break",Mental Health\
+"Step away for a moment",Mental Health\
+"Talk to someone I trust",Mental Health\
+"Say no to something today",Mental Health\
+"Don\'92t force myself to be productive",Mental Health\
+"Be honest about how I\'92m feeling",Mental Health\
+"Do something relaxing",Mental Health\
+"Rest without guilt",Mental Health\
+"Stop doomscrolling",Mental Health\
+"Unplug for a while",Mental Health\
+"Write down one thought",Mental Health\
+"Go quiet for a bit",Mental Health\
+"Pause when I\'92m overwhelmed",Mental Health\
+"Don\'92t explain myself today",Mental Health\
+"Do nothing for 5 minutes",Mental Health\
+"Let go of one worry",Mental Health\
+"Ignore the pressure to be perfect",Mental Health\
+"Listen to my feelings",Mental Health\
+"Let myself cry if needed",Mental Health\
+"Don\'92t check social media",Mental Health\
+"Take it slow today",Mental Health\
+"Don\'92t argue online",Mental Health\
+"Speak kindly to myself",Mental Health\
+"Cancel something if I need to",Mental Health\
+"Give myself permission to be tired",Mental Health\
+"Stay off my phone before bed",Mental Health\
+"Vent to a friend",Mental Health\
+"Let myself feel sad",Mental Health\
+"Recognize when I\'92m stressed",Mental Health\
+"Name how I feel",Mental Health\
+"Do something that calms me",Mental Health\
+"Let go of what I can\'92t control",Mental Health\
+"Just breathe",Mental Health\
+"Leave a stressful situation",Mental Health\
+"Give myself space",Mental Health\
+"Say no without guilt",Mental Health\
+"Let myself sleep in",Mental Health\
+"Stop and do nothing",Mental Health\
+"Take a mental break",Mental Health\
+"Don\'92t overthink",Mental Health\
+"Stop trying to fix everything",Mental Health\
+"Be still for a few minutes",Mental Health\
+"Don\'92t feel bad for saying no",Mental Health\
+"Admit when I\'92m not okay",Mental Health\
+"Stay off my phone when anxious",Mental Health\
+"Skip one thing if I need to",Mental Health\
+"Turn off notifications",Mental Health\
+"Take a quiet moment",Mental Health\
+"Let go of overthinking",Mental Health\
+"Remind myself I\'92m doing my best",Mental Health\
+"Pause instead of reacting",Mental Health\
+"Let things be unfinished",Mental Health\
+"Admit I\'92m overwhelmed",Mental Health\
+"Log my anxiety",Mental Health\
+"Take time to do nothing",Mental Health\
+"Give myself permission to rest",Mental Health\
+"Don\'92t force myself to be happy",Mental Health\
+"Focus on what I can control",Mental Health\
+"Let myself feel tired",Mental Health\
+"Skip the news today",Mental Health\
+"Check my stress level",Mental Health\
+"Don\'92t push myself too hard",Mental Health\
+"Give myself a reset moment",Mental Health\
+"Stay in bed longer",Mental Health\
+"Turn off my brain for a bit",Mental Health\
+"Say no to a plan",Mental Health\
+"Step away from my desk",Mental Health\
+"Let myself zone out",Mental Health\
+"Talk about how I\'92m doing",Mental Health\
+"Cancel something I don\'92t have energy for",Mental Health\
+"Say what I need",Mental Health\
+"Log one thing that made me anxious",Mental Health\
+"Recognize my limits",Mental Health\
+"Listen to what I need",Mental Health\
+"Take a minute to just exist",Mental Health\
+"Let myself feel burnt out",Mental Health\
+"Step outside for fresh air",Mental Health\
+"Go somewhere quiet",Mental Health\
+"Don\'92t take on extra tasks",Mental Health\
+"Let go of the pressure to do more",Mental Health\
+"Do less today",Mental Health\
+"Close my eyes for a bit",Mental Health\
+"Speak honestly about my feelings",Mental Health\
+"Don\'92t rush anything",Mental Health\
+"Take it one thing at a time",Mental Health\
+"Slow down when I start spiraling",Mental Health\
+"Be okay with not being okay",Mental Health\
+"Don\'92t answer every message",Mental Health\
+"Take care of my headspace",Mental Health\
+"Say no to someone if I need to",Mental Health\
+"Be alone without distractions",Mental Health\
+"Let go of today\'92s stress",Mental Health\
+\'93Meditate for 5 minutes\'94,Mental Health\
+text,category\
+"Plan my day",Productivity\
+"Make a to-do list",Productivity\
+"Clear my inbox",Productivity\
+"Prioritize tasks",Productivity\
+"Work on one thing at a time",Productivity\
+"Set goals for the day",Productivity\
+"Check my calendar",Productivity\
+"Stick to my schedule",Productivity\
+"Review my tasks",Productivity\
+"Time block my work",Productivity\
+"Start work on time",Productivity\
+"Batch similar tasks",Productivity\
+"Prep for tomorrow",Productivity\
+"Focus on deep work",Productivity\
+"Limit social media",Productivity\
+"Turn off distractions",Productivity\
+"Check off one task",Productivity\
+"Update my task list",Productivity\
+"Handle overdue tasks",Productivity\
+"Use a timer to stay focused",Productivity\
+"Review my weekly goals",Productivity\
+"Check off top priority",Productivity\
+"Do one high-value task",Productivity\
+"Clean my desk",Productivity\
+"Organize my workspace",Productivity\
+"Check progress on goals",Productivity\
+"Start my first task early",Productivity\
+"Follow my daily routine",Productivity\
+"Stick to my time limits",Productivity\
+"Finish one big task",Productivity\
+"Review completed tasks",Productivity\
+"Use the pomodoro method",Productivity\
+"Check tasks due today",Productivity\
+"Spend 10 minutes planning",Productivity\
+"Prep for tomorrow\'92s tasks",Productivity\
+"Stick to my focus blocks",Productivity\
+"Limit task switching",Productivity\
+"Finish a quick task",Productivity\
+"Review deadlines",Productivity\
+"Organize my files",Productivity\
+"Start a difficult task",Productivity\
+"Log my completed tasks",Productivity\
+"Do my hardest task first",Productivity\
+"Follow my plan for the day",Productivity\
+"Turn on focus mode",Productivity\
+"Work without multitasking",Productivity\
+"Prep tasks for the week",Productivity\
+"Declutter my to-do list",Productivity\
+"Make a list for tomorrow",Productivity\
+"Work in short bursts",Productivity\
+"Stop procrastinating",Productivity\
+"Get back to a paused task",Productivity\
+"Say no to extra tasks",Productivity\
+"Limit open tabs",Productivity\
+"Work on my top priority",Productivity\
+"Don\'92t break the chain",Productivity\
+"Get ahead on work",Productivity\
+"Review recurring tasks",Productivity\
+"Do focused work",Productivity\
+"Limit meetings today",Productivity\
+"Work uninterrupted",Productivity\
+"Turn off unnecessary alerts",Productivity\
+"Start working right away",Productivity\
+"Review weekly agenda",Productivity\
+"Prep materials for tomorrow",Productivity\
+"Stick to my top 3 goals",Productivity\
+"Check off one lingering task",Productivity\
+"Handle one admin task",Productivity\
+"Work from my action list",Productivity\
+"Limit meetings to 30 minutes",Productivity\
+"Start my work timer",Productivity\
+"Stick to one tab",Productivity\
+"Work in 25 minute chunks",Productivity\
+"Keep notes on tasks",Productivity\
+"Write down next steps",Productivity\
+"Break big tasks into small ones",Productivity\
+"Get started right away",Productivity\
+"Work on recurring tasks",Productivity\
+"Prepare for my next meeting",Productivity\
+"Keep work area clean",Productivity\
+"Don\'92t add new tasks today",Productivity\
+"Review what\'92s overdue",Productivity\
+"Catch up on one missed task",Productivity\
+"Focus on what matters most",Productivity\
+"Spend less time on low-priority work",Productivity\
+"Take notes during work sessions",Productivity\
+"Do a quick productivity check-in",Productivity\
+"Avoid context switching",Productivity\
+"Track task completion time",Productivity\
+"Revisit unfinished work",Productivity\
+"Use a daily task template",Productivity\
+"Work on tasks in order",Productivity\
+"Don\'92t delay key decisions",Productivity\
+"Plan my top 3 for the day",Productivity\
+"Finish something from yesterday",Productivity\
+"Focus on one project",Productivity\
+"Check project status",Productivity\
+"Work on a deadline task",Productivity\
+"Knock out one small task",Productivity\
+"Reorder my task list",Productivity}
