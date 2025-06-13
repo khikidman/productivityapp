@@ -16,34 +16,83 @@ struct MainView: View {
     
     var body: some View {
             TabView {
-                NavigationStack {
-                    DashboardView()
-                }
-                .tabItem {
-                    Label("Dashboard", systemImage: "calendar")
+//                NavigationStack {
+//                    DashboardView()
+//                }
+//                .tabItem {
+//                    Label("Dashboard", systemImage: "calendar")
+//                }
+//                
+//                NavigationStack {
+//                    TaskView()
+//                        
+//                }
+//                .tabItem {
+//                    Label("Tasks", systemImage: "checkmark.circle")
+//                }
+//                
+//                if !showSignInView {
+//                    NavigationStack {
+//                        ProfileView(showSignInView: $showSignInView)
+//                            
+//                    }
+//                    .tabItem {
+//                        Label("Settings", systemImage: "gear")
+//                    }
+//                }
+                Tab {
+                    NavigationStack {
+                        DashboardView()
+                    }
+                } label: {
+                    Label("Dashboard", systemImage: "house")
                 }
                 
-                NavigationStack {
-                    TaskView()
-                        
-                }
-                .tabItem {
+                Tab {
+                    NavigationStack {
+                        TaskView()
+                    }
+                } label: {
                     Label("Tasks", systemImage: "checkmark.circle")
                 }
                 
-                if !showSignInView {
-                    NavigationStack {
-                        ProfileView(showSignInView: $showSignInView)
-                            
-                    }
-                    .tabItem {
+                if (!showSignInView) {
+                    Tab {
+                        NavigationStack {
+                            ProfileView()
+                        }
+                    } label: {
                         Label("Settings", systemImage: "gear")
                     }
                 }
+                
+                Tab(role: .search) {
+                    NavigationStack {
+                        SearchView()
+                    }
+                }
+                
+                
+                
             }
             .tabViewStyle(.automatic)
             .tint(.pink)
             .backgroundStyle(.windowBackground)
+//            .toolbar {
+//                ToolbarItem(placement: .bottomBar) {
+//                    Button {
+//                        
+//                    } label: {
+//                        Image(systemName: "magnifyingglass")
+//                    }
+//                }
+//            }
         
     }
+}
+
+#Preview {
+    MainView(showSignInView: .constant(false))
+        .environmentObject(TodoViewModel())
+        .environmentObject(HabitViewModel())
 }

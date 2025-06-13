@@ -70,6 +70,7 @@ struct EventCardView: View {
         ZStack {
             // begin event card
             RoundedRectangle(cornerRadius: 4)
+                .glassEffect(in: .rect(cornerRadius: 4))
                 .padding(.vertical, 2)
                 .foregroundStyle(editModeEnabled ? .blue : .blue.opacity(0.3))
                 .frame(width: 325, height: max(cardHeight, 20))
@@ -129,7 +130,7 @@ struct EventCardView: View {
                         if editModeEnabled {
                             // Top resize bar
                             RoundedRectangle(cornerRadius: 1)
-                                .fill(Color.white)
+                                .glassEffect(in: .rect(cornerRadius: 1))
                                 .frame(width: 30, height: 4)
                                 .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
                                 .overlay(
@@ -182,7 +183,7 @@ struct EventCardView: View {
                             
                             // Bottom resize bar
                             RoundedRectangle(cornerRadius: 1)
-                                .fill(Color.white)
+                                .glassEffect(in: .rect(cornerRadius: 1))
                                 .frame(width: 30, height: 4)
                                 .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
                                 .overlay(

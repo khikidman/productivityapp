@@ -31,6 +31,11 @@ class WeekViewModel: ObservableObject {
 
 struct NewScheduleView: View {
     
+    @State private var newHabitTitle = ""
+    @State private var newHabitDescription = ""
+    @State private var newHabitStartTime = Date()
+    @State private var showAddHabit = false;
+    
     @StateObject private var weekVM = WeekViewModel()
     
     @EnvironmentObject var todoVM: TodoViewModel
@@ -57,6 +62,11 @@ struct NewScheduleView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
+                    Button {
+                        showAddHabit.toggle()
+                    } label: {
+                        Label("New Habit", systemImage: "repeat")
+                    }
                 } label: {
                     Image(systemName: "plus")
                         .foregroundStyle(.pink)
@@ -67,6 +77,28 @@ struct NewScheduleView: View {
         .onAppear {
             weekVM.loadWeeks(centeredOn: Date())
             selectedDay = weekVM.currentDay()
+        }
+        .sheet(isPresented: $showAddHabit) {
+            AddHabitView(
+                title: $newHabitTitle,
+                description: $newHabitDescription,
+                startTime: $newHabitStartTime,
+                onSave: { habit in
+                    Task {
+                        do {
+                            let user = try AuthenticationManager.shared.getAuthenticatedUser()
+                            let userId = user.uid
+                            try await UserManager.shared.createHabit(userId: userId, habit: habit)
+                            showAddHabit = false
+                        } catch {
+                            showAddHabit = false
+                        }
+                    }
+                },
+                onCancel: {
+                    showAddHabit = false
+                }
+            )
         }
     }
 }

@@ -31,7 +31,7 @@ final class ProfileViewModel: ObservableObject {
 struct ProfileView: View {
     
     @StateObject private var viewModel = ProfileViewModel()
-    @Binding var showSignInView: Bool
+    @State var showSignInView: Bool = false
     @State private var showLinkPopup = false
     
     var body: some View {
@@ -99,6 +99,7 @@ struct ProfileView: View {
                     
                 }
             }
+            ToolbarSpacer()
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink {
                     SettingsView(showSignInView: $showSignInView)

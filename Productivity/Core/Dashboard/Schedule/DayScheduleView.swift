@@ -27,8 +27,8 @@ class DayScheduleViewModel: ObservableObject {
             )
         } + habits.compactMap {
             let start = $0.startTime
-            let end = $0.endTime ?? start?.addingTimeInterval(3600)
-            return Event(id: UUID(uuidString: $0.id)!, title: $0.title, startTime: start!, endTime: end!, sourceType: .habit)
+            let end = $0.endTime ?? start.addingTimeInterval(3600)
+            return Event(id: UUID(uuidString: $0.id)!, title: $0.title, startTime: start, endTime: end, sourceType: .habit)
         }
     }
 }
@@ -64,7 +64,10 @@ struct DayScheduleView: View {
         .onAppear {
             Task {
                 do {
-                    try await viewModel.loadEvents(habits: HabitManager.shared.loadHabits(for: selectedDay.date), todos: todoVM.todoItems)
+                    try await viewModel.loadEvents(
+                        habits: HabitManager.shared.loadHabits(for: selectedDay.date),
+                        todos: todoVM.todoItems
+                    )
                     print(viewModel.events)
                 } catch {
                     print("failure")
@@ -74,7 +77,10 @@ struct DayScheduleView: View {
         .onChange(of: selectedDay) {
             Task {
                 do {
-                    try await viewModel.loadEvents(habits: HabitManager.shared.loadHabits(for: selectedDay.date), todos: todoVM.todoItems)
+                    try await viewModel.loadEvents(
+                        habits: HabitManager.shared.loadHabits(for: selectedDay.date),
+                        todos: todoVM.todoItems
+                    )
                     print(selectedDay.date)
                     print(viewModel.events)
                 } catch {
