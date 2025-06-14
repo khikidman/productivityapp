@@ -34,6 +34,7 @@ struct NewScheduleView: View {
     @State private var newHabitTitle = ""
     @State private var newHabitDescription = ""
     @State private var newHabitStartTime = Date()
+    @State private var newHabitEndTime = Date().addingTimeInterval(3600)
     @State private var showAddHabit = false;
     
     @StateObject private var weekVM = WeekViewModel()
@@ -83,6 +84,7 @@ struct NewScheduleView: View {
                 title: $newHabitTitle,
                 description: $newHabitDescription,
                 startTime: $newHabitStartTime,
+                endTime: $newHabitEndTime,
                 onSave: { habit in
                     Task {
                         do {

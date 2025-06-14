@@ -12,10 +12,12 @@ struct AddHabitView: View {
     @Binding var title: String
     @Binding var description: String
     @Binding var startTime: Date
+    @Binding var endTime: Date
     @State var repeatType: HabitRepeatTypeOption = .daily
     @State private var selectedWeekdays: Set<Int> = []
     @State private var nDays: Int = 2
-    @State var selectedTime: Date = Date()
+    @State var selectedStartTime: Date = Date()
+    @State var selectedEndTime: Date = Date().addingTimeInterval(3600)
     @State private var iconName = "repeat"
     
     struct Weekday: Identifiable {
@@ -81,11 +83,12 @@ struct AddHabitView: View {
                                             .font(.subheadline)
                                         
                                         
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.primary)
                                         
                                     }
                                 }
                             }
+                            .glassEffectTransition(.identity)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)
                         }
@@ -121,8 +124,10 @@ struct AddHabitView: View {
                             .padding(.bottom, 4)
                         }
                     }
-                    .glassEffect(in: .rect(cornerRadius: 13))
+                    .animation(.smooth, value: repeatType)
+                    .glassEffect(in: .rect(cornerRadius: 16))
                     .pickerStyle(.segmented)
+                    .controlSize(.regular)
                     .padding(.horizontal)
                     
                     HStack {
@@ -134,25 +139,18 @@ struct AddHabitView: View {
                             TextField("Description", text: $description)
                                 .padding(8)
                                 .glassEffect(.regular.interactive())
-                        }.padding(.trailing)
+                        }
+                        .padding(.trailing, 4)
+                        
                         Menu {
                             
                         } label: {
-                            Color.black.frame(width: 76, height: 76)
-                                .clipShape(.rect(cornerRadius: 10))
-                                .opacity(0.4)
-                                .overlay {
-                                    ZStack() {
-                                        Image(systemName: "repeat")
-                                            .font(.system(size: 24))
-                                            .foregroundStyle(.pink)
-                                            .frame(width: 50, height: 50)
-                                        Image(systemName: "chevron.down")
-                                            .tint(.gray)
-                                            .frame(width: 24)
-                                            .padding(.top, 48)
-                                    }
-                                }
+                                Image(systemName: "repeat")
+                                    .font(.system(size: 30))
+                                    .foregroundStyle(.pink)
+                                    .frame(width: 60, height: 60)
+                                    .padding(13)
+                                    .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 16))
                         }
                     }
                     .padding(.horizontal)
@@ -162,22 +160,33 @@ struct AddHabitView: View {
                     //                if (repeatType == .weekly) {
                     //                    DatePicker("Weekdays", selection: $selectedWeekdays, displayedComponents: [.])
                     //                }
+                    HStack {
+                        DatePicker("From", selection: $selectedStartTime, displayedComponents: [.hourAndMinute])
+                            .datePickerStyle(.compact)
+                            .tint(.pink)
+                            .onAppear {
+                                // Convert DateComponents -> Date
+                                selectedStartTime = startTime
+                            }
+                            .onChange(of: selectedStartTime) {
+                                // Convert Date -> DateComponents
+                                startTime = selectedStartTime
+                            }
+                        Spacer()
+                        DatePicker("To", selection: $selectedEndTime, displayedComponents: [.hourAndMinute])
+                            .datePickerStyle(.compact)
+                            .tint(.pink)
+                            .onAppear {
+                                // Convert DateComponents -> Date
+                                selectedEndTime = endTime
+                            }
+                            .onChange(of: selectedEndTime) {
+                                // Convert Date -> DateComponents
+                                endTime = selectedEndTime
+                            }
+                    }
+                    .padding(.horizontal)
                     
-                    DatePicker("Time", selection: $selectedTime, displayedComponents: [.hourAndMinute])
-                        .datePickerStyle(.wheel)
-                        .tint(.pink)
-                        .padding(.horizontal)
-                        .frame(height: 80)
-                        .clipped()
-                        .contentShape(Rectangle())
-                        .onAppear {
-                            // Convert DateComponents -> Date
-                            selectedTime = startTime
-                        }
-                        .onChange(of: selectedTime) {
-                            // Convert Date -> DateComponents
-                            startTime = selectedTime
-                        }
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .cornerRadius(12)
@@ -190,6 +199,7 @@ struct AddHabitView: View {
                 
                 ToolbarItem(placement: .bottomBar) {
                     Button("Cancel", action: onCancel)
+                        .foregroundStyle(.primary)
                 }
                 
                 ToolbarSpacer(.flexible, placement: .bottomBar)
@@ -207,7 +217,7 @@ struct AddHabitView: View {
                                     title: title,
                                     description: description,
                                     startTime: startTime,
-                                    endTime: startTime.addingTimeInterval(1800),
+                                    endTime: endTime,
                                     iconName: iconName,
                                     repeatRule: repeatRule // 👈 HERE
                                 )
@@ -221,9 +231,9 @@ struct AddHabitView: View {
                 }
             }
         }
-        .background(.windowBackground)
+        .background(.windowBackground.opacity(0.1))
         
-        .presentationDetents([.fraction(0.5), .large])
+        .presentationDetents([.fraction(0.45), .fraction(0.80)])
     }
 }
 
@@ -244,6 +254,21 @@ enum HabitRepeatTypeOption: String, CaseIterable, Identifiable {
 }
 
 #Preview {
-    HabitView()
-        .environmentObject(HabitViewModel())
-}
+    AddHabitView(
+        title: .constant(""),
+        description: .constant(""),
+        startTime: .constant(Date()),
+        endTime: .constant(Date().addingTimeInterval(3600)),
+        onSave: { habit in
+            Task {
+                do {
+                    let user = try AuthenticationManager.shared.getAuthenticatedUser()
+                    let userId = user.uid
+                    try await UserManager.shared.createHabit(userId: userId, habit: habit)
+                } catch {
+                }
+            }
+        },
+        onCancel: {
+        }
+    )}
