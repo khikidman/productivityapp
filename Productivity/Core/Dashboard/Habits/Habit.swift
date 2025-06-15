@@ -11,6 +11,7 @@ struct Habit: Identifiable, Codable {
     var iconName: String
     var category: String?
     var repeatRule: HabitRepeatRule
+    var sharedWith: [String]?
     
 //    mutating func markComplete(on date: Date = Date()) {
 //        completions.insert(date.stripTime())
@@ -29,7 +30,7 @@ struct Habit: Identifiable, Codable {
 //        return completions.contains(date.stripTime())
 //    }
     
-    init(id: String, userId: String, title: String, description: String, createdDate: Date = Date(), startTime: Date = Date(), endTime: Date? = nil, iconName: String = "repeat", category: String = "Uncategorized", repeatRule: HabitRepeatRule = .daily) {
+    init(id: String, userId: String, title: String, description: String, createdDate: Date = Date(), startTime: Date = Date(), endTime: Date? = nil, iconName: String = "repeat", category: String = "Uncategorized", repeatRule: HabitRepeatRule = .daily, sharedWith: [String] = []) {
         self.id = id
         self.userId = userId
         self.title = title
@@ -40,6 +41,7 @@ struct Habit: Identifiable, Codable {
         self.iconName = iconName
         self.category = category
         self.repeatRule = repeatRule
+        self.sharedWith = sharedWith
     }
     
     enum CodingKeys: String, CodingKey {
@@ -53,6 +55,7 @@ struct Habit: Identifiable, Codable {
         case iconName = "icon_name"
         case category = "category"
         case repeatRule = "repeat_rule"
+        case sharedWith = "shared_with"
     }
     
     init(from decoder: any Decoder) throws {
@@ -67,6 +70,7 @@ struct Habit: Identifiable, Codable {
         self.iconName = try container.decode(String.self, forKey: .iconName)
         self.category = try container.decodeIfPresent(String.self, forKey: .category)
         self.repeatRule = try container.decodeIfPresent(HabitRepeatRule.self, forKey: .repeatRule) ?? .daily
+        self.sharedWith = try container.decodeIfPresent([String].self, forKey: .sharedWith) ?? []
     }
     
     func encode(to encoder: any Encoder) throws {
@@ -81,6 +85,7 @@ struct Habit: Identifiable, Codable {
         try container.encodeIfPresent(self.iconName, forKey: .iconName)
         try container.encodeIfPresent(self.category, forKey: .category)
         try container.encode(self.repeatRule, forKey: .repeatRule)
+        try container.encodeIfPresent(self.sharedWith, forKey: .sharedWith)
     }
 }
 
@@ -149,6 +154,10 @@ final class HabitManager {
     
     func loadHabit(habitId: String) async throws -> Habit {
         return try await UserManager.shared.getHabit(habitId: habitId)
+    }
+    
+    func shareHabit(habit: Habit, with recipientIds: [String]) async throws {
+        try await UserManager.shared.shareHabit(habit: habit, with: recipientIds)
     }
     
 }

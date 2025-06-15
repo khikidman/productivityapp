@@ -245,7 +245,7 @@ struct EventCardView: View {
             
         }
         .disabled(isNavigating)
-        .highPriorityGesture(
+        .simultaneousGesture(
             TapGesture()
                 .onEnded { value in
                     if (event.sourceType == .habit) {
@@ -261,8 +261,8 @@ struct EventCardView: View {
                     }
                 }
             )
-            .gesture(
-                LongPressGesture(minimumDuration: 0.3)
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 0.5, maximumDistance: 10)
                     .sequenced(before: DragGesture())
                     .onChanged { value in
                         switch value {
@@ -340,7 +340,7 @@ struct EventCardView: View {
                         }
                     })
         
-        .gesture(
+        .simultaneousGesture(
             editModeEnabled ? DragGesture()
                 .onChanged { value in
                     if !isDragging {

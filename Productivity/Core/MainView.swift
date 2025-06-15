@@ -78,6 +78,10 @@ struct MainView: View {
             .tabViewStyle(.automatic)
             .tint(.pink)
             .backgroundStyle(.windowBackground)
+//            .tabBarMinimizeBehavior(.onScrollDown)
+//            .tabViewBottomAccessory {
+//                FitnessToolbarAccessory()
+//            }
 //            .toolbar {
 //                ToolbarItem(placement: .bottomBar) {
 //                    Button {

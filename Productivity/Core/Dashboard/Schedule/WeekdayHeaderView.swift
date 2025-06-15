@@ -24,5 +24,6 @@ struct WeekdayHeaderView: View {
             }
         }
         .frame(height: 20)
+        .padding(.top, 4)
     }
 }

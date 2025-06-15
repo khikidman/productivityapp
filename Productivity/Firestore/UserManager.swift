@@ -98,8 +98,77 @@ final class UserManager {
         try await userDocument(userId: userId).updateData(data)
     }
     
+    func sendFriendRequest(from senderId: String, to recipientId: String) async throws {
+        let data: [String:Any] = ["status": "pending", "created_at": Timestamp()]
+        
+        try await userDocument(userId: recipientId).collection("friend_requests").document(senderId).setData(data, merge: false)
+        
+        try await userDocument(userId: senderId).collection("sent_requests").document(recipientId).setData(data, merge: false)
+    }
+    
+    func acceptFriendRequest(from senderId: String, to recipientId: String) async throws {
+        let friendData: [String:Any] = ["status": "accepted", "created_at": Timestamp()]
+        
+        // Add friends
+        try await userDocument(userId: recipientId).collection("friends").document(senderId).setData(friendData, merge: false)
+        try await userDocument(userId: senderId).collection("friends").document(recipientId).setData(friendData, merge: false)
+        
+        // Remove friend requests
+        try await userDocument(userId: recipientId).collection("friend_requests").document(senderId).delete()
+        try await userDocument(userId: senderId).collection("sent_requests").document(recipientId).delete()
+    }
+    
+    func getFriendRequests(for userId: String) async throws -> [DBUser] {
+        let snapshot = try await userDocument(userId: userId).collection("friend_requests").getDocuments()
+        let requestIds = snapshot.documents.map { $0.documentID }
+        
+        return try await withThrowingTaskGroup(of: DBUser.self) { group in
+                for id in requestIds {
+                    group.addTask {
+                        try await self.getUser(userId: id)
+                    }
+                }
+                return try await group.reduce(into: []) { $0.append($1) }
+            }
+    }
+    
+    func getFriends(for userId: String) async throws -> [DBUser] {
+        let snapshot = try await userDocument(userId: userId).collection("friends").getDocuments()
+        let senderIds = snapshot.documents.map { $0.documentID }
+        
+        return try await withThrowingTaskGroup(of: DBUser.self) { group in
+            for senderId in senderIds {
+                group.addTask {
+                    return try await self.getUser(userId: senderId)
+                }
+            }
+            
+            var users: [DBUser] = []
+            for try await user in group {
+                users.append(user)
+            }
+            return users
+        }
+    }
+    
     func createHabit(userId: String, habit: Habit) async throws {
         try userDocument(userId: userId).collection("habits").document(habit.id).setData(from: habit, merge: false)
+    }
+    
+    func shareHabit(habit: Habit, with recipientIds: [String]) async throws {
+        guard !recipientIds.isEmpty else { return }
+        
+        var updatedHabit = habit
+        var currentSharedWith = habit.sharedWith ?? []
+        
+        currentSharedWith.append(contentsOf: recipientIds.filter { !currentSharedWith.contains($0) })
+        updatedHabit.sharedWith = currentSharedWith
+        
+        try userDocument(userId: habit.userId).collection("habits").document(habit.id).setData(from: updatedHabit, merge: true)
+        
+        for recipientId in recipientIds {
+            try userDocument(userId: recipientId).collection("shared_habits").document(habit.id).setData(from: updatedHabit, merge: true)
+        }
     }
     
     func deleteHabit(userId: String, habit: Habit) async throws {

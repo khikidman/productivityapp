@@ -19,6 +19,9 @@ struct AddHabitView: View {
     @State var selectedStartTime: Date = Date()
     @State var selectedEndTime: Date = Date().addingTimeInterval(3600)
     @State private var iconName = "repeat"
+    @State private var friends: [DBUser] = []
+    @State private var isLoadingFriends = true
+    @State private var sharedWith: [String] = []
     
     struct Weekday: Identifiable {
         let id: Int // 1 = Sunday, 7 = Saturday
@@ -69,8 +72,9 @@ struct AddHabitView: View {
                         if repeatType == .weekly {
                             HStack {
                                 ForEach(weekdays) { weekday in
+                                    let containsWeekday = selectedWeekdays.contains(weekday.id)
                                     Button(action: {
-                                        if selectedWeekdays.contains(weekday.id) {
+                                        if containsWeekday {
                                             selectedWeekdays.remove(weekday.id)
                                         } else {
                                             selectedWeekdays.insert(weekday.id)
@@ -78,8 +82,12 @@ struct AddHabitView: View {
                                     }) {
                                         Text(weekday.shortName)
                                             .padding(8)
-                                            .frame(maxWidth: .infinity)
-                                            .glassEffect(.regular.interactive().tint(selectedWeekdays.contains(weekday.id) ? .pink : .clear))
+                                            .padding(.horizontal, 6)
+                                            .glassEffect(.regular.interactive().tint(containsWeekday ? .pink : .clear))
+//                                            .background(
+//                                                RoundedRectangle(cornerRadius: 8)
+//                                                    .fill(selectedWeekdays.contains(weekday.id) ? Color.pink.opacity(0.3) : Color.clear)
+//                                            )
                                             .font(.subheadline)
                                         
                                         
@@ -197,6 +205,38 @@ struct AddHabitView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        if isLoadingFriends {
+                            ProgressView().disabled(true)
+                        } else {
+                            ForEach(friends, id: \.userId) { friend in
+                                Button {
+                                    // Share with this friend
+                                    sharedWith.append(friend.userId)
+                                    print("Share with \(friend)")
+                                } label: {
+                                    Label(friend.firstName ?? friend.email ?? friend.userId, systemImage: "person.fill")
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "person.fill.badge.plus")
+                    }
+                    .onAppear {
+                                Task {
+                                    do {
+                                        let uid = try AuthenticationManager.shared.getAuthenticatedUser().uid
+                                        friends = try await UserManager.shared.getFriends(for: uid)
+                                        isLoadingFriends = false
+                                    } catch {
+                                        print("Error fetching friends: \(error)")
+                                        isLoadingFriends = false
+                                    }
+                                }
+                            }
+                }
+                
                 ToolbarItem(placement: .bottomBar) {
                     Button("Cancel", action: onCancel)
                         .foregroundStyle(.primary)
@@ -219,8 +259,11 @@ struct AddHabitView: View {
                                     startTime: startTime,
                                     endTime: endTime,
                                     iconName: iconName,
-                                    repeatRule: repeatRule // 👈 HERE
+                                    repeatRule: repeatRule,
+                                    sharedWith: sharedWith
                                 )
+                                
+                                try await UserManager.shared.shareHabit(habit: newHabit, with: sharedWith)
                                 
                                 onSave(newHabit)
                             } catch {
@@ -233,7 +276,7 @@ struct AddHabitView: View {
         }
         .background(.windowBackground.opacity(0.1))
         
-        .presentationDetents([.fraction(0.45), .fraction(0.80)])
+        .presentationDetents([.fraction(0.5), .fraction(0.80)])
     }
 }
 

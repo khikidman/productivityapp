@@ -17,34 +17,34 @@ struct WeekdaySelectorView: View {
             ForEach(weekVM.weeks.indices, id:\.self) { index in
                 HStack {
                     ForEach(weekVM.weeks[index].days) { day in
-                        Button {
-                            selectedDay = day
-                        } label: {
-                            ZStack {
-                                if (day == selectedDay) {
-                                    Circle()
-                                        .fill(day.isToday() ? .pink : Color.primary)
-                                        .overlay(Text("\(day.dayNumber)").foregroundStyle(.windowBackground))
-                                } else {
-                                    Text("\(day.dayNumber)")
-                                        .foregroundStyle(day.isToday() ? .pink: Color.primary)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 36)
-                            
-                        }
+                        
+                        WeekdaySelector(day: day, selectedDay: $selectedDay)
+                        
+                        
+//                        .overlay(Text("\(day.dayNumber)").foregroundStyle(.windowBackground))
                     }
                 }
+                .backgroundStyle(.clear)
                 .padding(5)
-                .padding(.bottom, 8)
                 .tag(index)
+                
+//                TabView(selection: $selectedDay) {
+//                    ForEach(weekVM.weeks[index].days) { day in
+//                        Text("\(day.dayNumber)")
+//                            .tag(day)
+//                            .frame(maxWidth: .infinity)
+//                    }
+//                }
+//                .tabViewStyle(.d)
+                .tag(index)
+                
             }
         }
+        .backgroundStyle(.clear)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .frame(maxWidth: .infinity)
-        .frame(height: 48)
-        .overlay(Divider().background(.gray), alignment: .bottom)
+        .frame(height: 40)
+//        .overlay(Divider().background(.gray), alignment: .bottom)
 //        GeometryReader { geometry in
 //                let columnWidth = geometry.size.width / CGFloat(7)
 //                
@@ -77,4 +77,28 @@ struct WeekdaySelectorView: View {
 //        }
 //        .frame(height: 36)
     }
+}
+
+struct WeekdaySelector: View {
+    
+    var day: Day
+    @Binding var selectedDay: Day
+    
+    var body: some View {
+        Button {
+            selectedDay = day
+        } label: {
+            Text("\(day.dayNumber)")
+                .foregroundStyle(day == selectedDay ? (day.isToday() ? Color.primary : Color.pink) : (day.isToday() ? Color.pink : Color.primary))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+        }
+        .glassEffect(.regular.interactive().tint(day == selectedDay ? (day.isToday() ? .pink : .primary) : .clear))
+    }
+}
+
+#Preview {
+    NewScheduleView()
+        .environmentObject(HabitViewModel())
+        .environmentObject(TodoViewModel())
 }

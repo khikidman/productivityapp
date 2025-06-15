@@ -33,6 +33,11 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @State var showSignInView: Bool = false
     @State private var showLinkPopup = false
+    @State private var friends: [DBUser] = []
+    @State private var isLoadingFriends = true
+    @State private var friendRequests: [DBUser] = []
+    @State private var isLoadingFriendRequests = true
+    @State private var addFriendId: String = ""
     
     var body: some View {
         VStack {
@@ -60,6 +65,7 @@ struct ProfileView: View {
                     .font(.title)
             }
             
+            
             List {
                 if let user = viewModel.user {
                     
@@ -71,6 +77,96 @@ struct ProfileView: View {
                     
                 }
                 
+                Section("Friends") {
+                    if isLoadingFriends {
+                        ProgressView().disabled(true)
+                    } else {
+                        ForEach(friends, id: \.userId) { friend in
+                            NavigationLink {
+                                
+                            } label: {
+                                Label(friend.firstName ?? friend.email ?? friend.userId, systemImage: "person.fill")
+                            }
+                        }
+                    }
+                }
+                Section("Requests") {
+                    if isLoadingFriendRequests {
+                        ProgressView().disabled(true)
+                    } else {
+                        ForEach(friendRequests, id: \.userId) { friendRequest in
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(friendRequest.firstName ?? friendRequest.email ?? friendRequest.userId)
+                                                .fontWeight(.medium)
+                                                .lineLimit(1)
+                                            if let email = friendRequest.email {
+                                                Text(email)
+                                                    .font(.caption)
+                                                    .foregroundColor(.gray)
+                                            }
+                                        }
+                                        Spacer()
+                                        Button {
+                                            Task {
+                                                do {
+                                                    let currentUserId = try AuthenticationManager.shared.getAuthenticatedUser().uid
+                                                    try await UserManager.shared.acceptFriendRequest(
+                                                        from: friendRequest.userId,
+                                                        to: currentUserId
+                                                    )
+                                                    // Optionally remove the request from the local list
+                                                    friendRequests.removeAll { $0.userId == friendRequest.userId }
+                                                } catch {
+                                                    print("Failed to accept friend request: \(error)")
+                                                }
+                                            }
+                                        } label: {
+                                            Image(systemName: "person.fill.badge.plus")
+                                        }
+                                    }
+                                }
+                        HStack {
+                            TextField("Friend ID", text: $addFriendId)
+                            Button {
+                                Task {
+                                    do {
+                                        try await UserManager.shared.sendFriendRequest(
+                                            from: AuthenticationManager.shared.getAuthenticatedUser().uid,
+                                            to: addFriendId
+                                        )
+                                    } catch {
+                                        
+                                    }
+                                }
+                            } label: {
+                                Label("Add Friend", systemImage: "person.fill.badge.plus")
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            .onAppear {
+                Task {
+                    do {
+                        let uid = try AuthenticationManager.shared.getAuthenticatedUser().uid
+                        friendRequests = try await UserManager.shared.getFriendRequests(for: uid)
+                    } catch {
+                        print("Error fetching friend requests: \(error)")
+                    }
+                    isLoadingFriendRequests = false
+                }
+                Task {
+                    do {
+                        let uid = try AuthenticationManager.shared.getAuthenticatedUser().uid
+                        friends = try await UserManager.shared.getFriends(for: uid)
+                        isLoadingFriends = false
+                    } catch {
+                        print("Error fetching friends: \(error)")
+                        isLoadingFriends = false
+                    }
+                }
             }
         }
         
