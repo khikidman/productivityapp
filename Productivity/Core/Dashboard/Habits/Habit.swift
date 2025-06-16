@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 struct Habit: Identifiable, Codable {
     let id: String
@@ -9,6 +10,7 @@ struct Habit: Identifiable, Codable {
     var startTime: Date
     var endTime: Date?
     var iconName: String
+    var colorHex: String
     var category: String?
     var repeatRule: HabitRepeatRule
     var sharedWith: [String]?
@@ -30,7 +32,7 @@ struct Habit: Identifiable, Codable {
 //        return completions.contains(date.stripTime())
 //    }
     
-    init(id: String, userId: String, title: String, description: String, createdDate: Date = Date(), startTime: Date = Date(), endTime: Date? = nil, iconName: String = "repeat", category: String = "Uncategorized", repeatRule: HabitRepeatRule = .daily, sharedWith: [String] = []) {
+    init(id: String, userId: String, title: String, description: String, createdDate: Date = Date(), startTime: Date = Date(), endTime: Date? = nil, iconName: String = "repeat", colorHex: String = "#ff375f", category: String = "Uncategorized", repeatRule: HabitRepeatRule = .daily, sharedWith: [String] = []) {
         self.id = id
         self.userId = userId
         self.title = title
@@ -39,6 +41,7 @@ struct Habit: Identifiable, Codable {
         self.startTime = startTime
         self.endTime = endTime
         self.iconName = iconName
+        self.colorHex = colorHex
         self.category = category
         self.repeatRule = repeatRule
         self.sharedWith = sharedWith
@@ -53,6 +56,7 @@ struct Habit: Identifiable, Codable {
         case startTime = "start_time"
         case endTime = "end_time"
         case iconName = "icon_name"
+        case colorHex = "color_hex"
         case category = "category"
         case repeatRule = "repeat_rule"
         case sharedWith = "shared_with"
@@ -68,6 +72,7 @@ struct Habit: Identifiable, Codable {
         self.startTime = try container.decode(Date.self, forKey: .startTime)
         self.endTime = try container.decodeIfPresent(Date.self, forKey: .endTime)
         self.iconName = try container.decode(String.self, forKey: .iconName)
+        self.colorHex = try container.decode(String.self, forKey: .colorHex)
         self.category = try container.decodeIfPresent(String.self, forKey: .category)
         self.repeatRule = try container.decodeIfPresent(HabitRepeatRule.self, forKey: .repeatRule) ?? .daily
         self.sharedWith = try container.decodeIfPresent([String].self, forKey: .sharedWith) ?? []
@@ -83,6 +88,7 @@ struct Habit: Identifiable, Codable {
         try container.encodeIfPresent(self.startTime, forKey: .startTime)
         try container.encodeIfPresent(self.endTime, forKey: .endTime)
         try container.encodeIfPresent(self.iconName, forKey: .iconName)
+        try container.encodeIfPresent(self.colorHex, forKey: .colorHex)
         try container.encodeIfPresent(self.category, forKey: .category)
         try container.encode(self.repeatRule, forKey: .repeatRule)
         try container.encodeIfPresent(self.sharedWith, forKey: .sharedWith)
@@ -110,6 +116,10 @@ extension Habit {
         default:
             return true
         }
+    }
+    
+    var color: Color {
+        Color(hex: colorHex) ?? .blue // fallback if invalid
     }
 }
 

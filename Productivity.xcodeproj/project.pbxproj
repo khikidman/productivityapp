@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		471937AB2DFF86C800E5C349 /* EventColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */; };
 		476D711A2DE8ED6700F2AA25 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */; };
 		476D71212DEB9AD900F2AA25 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71202DEB9AD900F2AA25 /* FirebaseAnalytics */; };
 		476D71232DEB9AD900F2AA25 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71222DEB9AD900F2AA25 /* FirebaseAuth */; };
@@ -82,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventColorPickerView.swift; sourceTree = "<group>"; };
 		476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		47C6BF552DCFAA4C00915513 /* Productivity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Productivity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductivityApp.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		47E294952DEEB10B00130834 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */,
 				47E294AE2DEFADF600130834 /* Event.swift */,
 				47E294A82DEFA46800130834 /* NewScheduleView.swift */,
 				47C6BF9F2DE7ED7E00915513 /* ScheduleView.swift */,
@@ -547,6 +550,7 @@
 				47E2948D2DEEAF7F00130834 /* SettingsViewModel.swift in Sources */,
 				47E294712DEBAD3700130834 /* AuthenticationView.swift in Sources */,
 				47C6BF5B2DCFAA4C00915513 /* TaskView.swift in Sources */,
+				471937AB2DFF86C800E5C349 /* EventColorPickerView.swift in Sources */,
 				47E294B72DF65D6900130834 /* Week.swift in Sources */,
 				47C6BF872DDCB0FA00915513 /* HabitViewModel.swift in Sources */,
 				47E294AF2DEFADFE00130834 /* Event.swift in Sources */,

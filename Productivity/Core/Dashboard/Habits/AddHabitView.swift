@@ -19,9 +19,32 @@ struct AddHabitView: View {
     @State var selectedStartTime: Date = Date()
     @State var selectedEndTime: Date = Date().addingTimeInterval(3600)
     @State private var iconName = "repeat"
+    @State private var colorHex: String = "#ff375f"
+    @State private var selectedColor: Color
+    @State private var isColorPickerPresented = false
     @State private var friends: [DBUser] = []
     @State private var isLoadingFriends = true
     @State private var sharedWith: [String] = []
+    
+    var onSave: (Habit) -> Void
+    var onCancel: () -> Void
+    
+    init(
+        title: Binding<String>,
+        description: Binding<String>,
+        startTime: Binding<Date>,
+        endTime: Binding<Date>,
+        onSave: @escaping (Habit) -> Void,
+        onCancel: @escaping () -> Void
+    ) {
+        self._title = title
+        self._description = description
+        self._startTime = startTime
+        self._endTime = endTime
+        self.onSave = onSave
+        self.onCancel = onCancel
+        _selectedColor = State(initialValue: Color(hex: "#FF5733") ?? .blue)
+    }
     
     struct Weekday: Identifiable {
         let id: Int // 1 = Sunday, 7 = Saturday
@@ -56,8 +79,6 @@ struct AddHabitView: View {
 
     //IconPickerView(iconName: $iconName)
     
-    var onSave: (Habit) -> Void
-    var onCancel: () -> Void
     
     var body: some View {
         NavigationStack {
@@ -205,6 +226,13 @@ struct AddHabitView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 
+                ToolbarItem(placement: .topBarLeading) {
+                    ColorPicker("", selection: $selectedColor, supportsOpacity: false)
+                        .labelsHidden()
+                        .scaleEffect(2.0)
+                        .clipShape(Circle())
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         if isLoadingFriends {
@@ -259,6 +287,7 @@ struct AddHabitView: View {
                                     startTime: startTime,
                                     endTime: endTime,
                                     iconName: iconName,
+                                    colorHex: selectedColor.toHex()!,
                                     repeatRule: repeatRule,
                                     sharedWith: sharedWith
                                 )
@@ -315,3 +344,4 @@ enum HabitRepeatTypeOption: String, CaseIterable, Identifiable {
         onCancel: {
         }
     )}
+

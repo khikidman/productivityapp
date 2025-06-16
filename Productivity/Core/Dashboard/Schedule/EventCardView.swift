@@ -72,13 +72,13 @@ struct EventCardView: View {
             RoundedRectangle(cornerRadius: 4)
                 .glassEffect(in: .rect(cornerRadius: 4))
                 .padding(.vertical, 2)
-                .foregroundStyle(editModeEnabled ? .blue : .blue.opacity(0.3))
+                .foregroundStyle(editModeEnabled ? Color(hex: event.colorHex)! : Color(hex: event.colorHex)!.opacity(0.3))
                 .frame(width: 325, height: max(cardHeight, 20))
                 .overlay(
                     ZStack (alignment: .leading){
                         HStack(alignment: .top, spacing:0) {
                             RoundedRectangle(cornerRadius: 2)
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(Color(hex: event.colorHex)!)
                                 .frame(width: 3)
                                 .frame(maxHeight: .infinity)
                                 .padding(.vertical, 2)
@@ -130,9 +130,8 @@ struct EventCardView: View {
                         if editModeEnabled {
                             // Top resize bar
                             RoundedRectangle(cornerRadius: 1)
-                                .glassEffect(in: .rect(cornerRadius: 1))
-                                .frame(width: 30, height: 4)
-                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
+                                .frame(width: 30, height: 6)
+                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
                                 .overlay(
                                     Image(systemName: "chevron.up").foregroundStyle(.gray).offset(y: -14)
                                         .opacity(showHandleHint ? 1 : 0)
@@ -168,7 +167,8 @@ struct EventCardView: View {
                                                             description: "",
                                                             startTime: event.startTime,
                                                             endTime: event.endTime,
-                                                            iconName: ""),
+                                                            iconName: "",
+                                                            colorHex: event.colorHex),
                                                             startTime: event.startTime,
                                                             endTime: event.endTime)
                                                     }
@@ -183,9 +183,8 @@ struct EventCardView: View {
                             
                             // Bottom resize bar
                             RoundedRectangle(cornerRadius: 1)
-                                .glassEffect(in: .rect(cornerRadius: 1))
-                                .frame(width: 30, height: 4)
-                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.blue, lineWidth: 1))
+                                .frame(width: 30, height: 6)
+                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
                                 .overlay(
                                     Image(systemName: "chevron.down").foregroundStyle(.gray).offset(y: 14)
                                         .opacity(showHandleHint ? 1 : 0)
@@ -223,7 +222,8 @@ struct EventCardView: View {
                                                             description: "",
                                                             startTime: event.startTime,
                                                             endTime: event.endTime,
-                                                            iconName: ""),
+                                                            iconName: "",
+                                                            colorHex: event.colorHex),
                                                             startTime: event.startTime,
                                                             endTime: event.endTime)
                                                     }
@@ -245,7 +245,7 @@ struct EventCardView: View {
             
         }
         .disabled(isNavigating)
-        .simultaneousGesture(
+        .highPriorityGesture(
             TapGesture()
                 .onEnded { value in
                     if (event.sourceType == .habit) {
@@ -261,7 +261,7 @@ struct EventCardView: View {
                     }
                 }
             )
-            .simultaneousGesture(
+            .gesture(
                 LongPressGesture(minimumDuration: 0.5, maximumDistance: 10)
                     .sequenced(before: DragGesture())
                     .onChanged { value in
@@ -340,7 +340,7 @@ struct EventCardView: View {
                         }
                     })
         
-        .simultaneousGesture(
+        .gesture(
             editModeEnabled ? DragGesture()
                 .onChanged { value in
                     if !isDragging {
