@@ -16,7 +16,7 @@ struct Event: Codable, Identifiable {
     var colorHex: String
     let sourceType: SourceType
     
-    init(id: UUID, title: String, startTime: Date, endTime: Date, colorHex: String = "#ff375f", sourceType: SourceType = .todo) {
+    init(id: UUID, title: String, startTime: Date, endTime: Date, colorHex: String = "#888888", sourceType: SourceType = .todo) {
         self.id = id
         self.title = title
         self.startTime = startTime

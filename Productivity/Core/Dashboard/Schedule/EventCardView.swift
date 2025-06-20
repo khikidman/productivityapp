@@ -109,6 +109,7 @@ struct EventCardView: View {
                                         Text("\(timeMarker)")
                                             .font(.system(size: 9))
                                             .lineLimit(1)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                     } icon: {
                                         Image(systemName: "clock")
                                             .font(.system(size: 10))
@@ -129,9 +130,9 @@ struct EventCardView: View {
                         
                         if editModeEnabled {
                             // Top resize bar
-                            RoundedRectangle(cornerRadius: 1)
+                            RoundedRectangle(cornerRadius: 3)
                                 .frame(width: 30, height: 6)
-                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
+                                .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
                                 .overlay(
                                     Image(systemName: "chevron.up").foregroundStyle(.gray).offset(y: -14)
                                         .opacity(showHandleHint ? 1 : 0)
@@ -182,15 +183,15 @@ struct EventCardView: View {
                                 )
                             
                             // Bottom resize bar
-                            RoundedRectangle(cornerRadius: 1)
+                            RoundedRectangle(cornerRadius: 3)
                                 .frame(width: 30, height: 6)
-                                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
+                                .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color(hex: event.colorHex)!, lineWidth: 1))
                                 .overlay(
                                     Image(systemName: "chevron.down").foregroundStyle(.gray).offset(y: 14)
                                         .opacity(showHandleHint ? 1 : 0)
                                         .animation(.easeInOut(duration: 0.5), value: showHandleHint)
                                 )
-                                .position(x: 20, y: cardHeight - 8) // inside bottom-left (adjust x/y as needed)
+                                .position(x: 20, y: max(cardHeight - 8, 13)) // inside bottom-left (adjust x/y as needed)
                                 .gesture(
                                     DragGesture()
                                         .onChanged { value in
@@ -241,13 +242,7 @@ struct EventCardView: View {
                 .offset(offset)
                 .offset(y: initialY)
                 .zIndex(1)
-            // end event card
-            
-        }
-        .disabled(isNavigating)
-        .highPriorityGesture(
-            TapGesture()
-                .onEnded { value in
+                .onTapGesture {
                     if (event.sourceType == .habit) {
                         Task {
                             do {
@@ -260,139 +255,130 @@ struct EventCardView: View {
                         }
                     }
                 }
-            )
-            .gesture(
-                LongPressGesture(minimumDuration: 0.5, maximumDistance: 10)
-                    .sequenced(before: DragGesture())
-                    .onChanged { value in
-                        switch value {
-                        case .second(true, let drag):
-                            // Drag in progress after long press
-                            withAnimation(.spring()) {
-                                editModeEnabled = true
-                                showHandleHint = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    withAnimation(.easeOut) {
-                                        showHandleHint = false
-                                    }
-                                }
+                .onLongPressGesture(minimumDuration: 0.3, maximumDistance: 10) {
+                    withAnimation(.spring()) {
+                        editModeEnabled = true
+                        showHandleHint = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation(.easeOut) {
+                                showHandleHint = false
                             }
-                            if let drag = drag {
-                                if !isDragging {
-                                    dragAnchorTime = snapToNearest15Minutes(event.startTime)
-                                }
-                                
-                                offset = drag.translation
-                                isDragging = true
-                                
-                                let deltaHours = drag.translation.height / hourHeight
-                                let deltaSeconds = deltaHours * 3600
-                                let newTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
-                                previewedStartTime = snapToNearest15Minutes(newTime)
-                            }
-                        default:
-                            break
                         }
                     }
-                    .onEnded { value in
-                        switch value {
-                        case .second(true, let drag):
-                            // Drag finished
-                            if let drag = drag {
-                                withAnimation(.spring()) {
-                                    let deltaHours = drag.translation.height / hourHeight
-                                    let deltaSeconds = deltaHours * 3600
-                                    
-                                    let newStartTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
-                                    
-                                    let originalDuration = event.endTime.timeIntervalSince(event.startTime)
-                                    event.startTime = snapToNearest15Minutes(newStartTime)
-                                    event.endTime = event.startTime.addingTimeInterval(originalDuration)
-                                    
-                                    if (event.sourceType == .habit) {
-                                        Task {
-                                            do {
-                                                try await UserManager.shared.updateHabitTime(
-                                                    habit: Habit(
-                                                        id: event.id.uuidString,
-                                                        userId: AuthenticationManager.shared.getAuthenticatedUser().uid,
-                                                        title: event.title,
-                                                        description: "",
-                                                        startTime: event.startTime,
-                                                        endTime: event.endTime,
-                                                        iconName: ""),
+                }
+                .gesture(
+                    editModeEnabled ? DragGesture()
+                        .onChanged { value in
+                            if !isDragging {
+                                dragAnchorTime = snapToNearest15Minutes(event.startTime)
+                            }
+        
+                            offset = value.translation
+                            isDragging = true
+        
+                            let deltaHours = value.translation.height / hourHeight
+                            let deltaSeconds = deltaHours * 3600
+                            let newTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
+                            previewedStartTime = snapToNearest15Minutes(newTime)
+                        }
+                        .onEnded { value in
+                            withAnimation(.spring()) {
+                                let deltaHours = value.translation.height / hourHeight
+                                let deltaSeconds = deltaHours * 3600
+        
+                                let newStartTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
+        
+                                let originalDuration = event.endTime.timeIntervalSince(event.startTime)
+                                event.startTime = snapToNearest15Minutes(newStartTime)
+                                event.endTime = event.startTime.addingTimeInterval(originalDuration)
+        
+                                if (event.sourceType == .habit) {
+                                    Task {
+                                        do {
+                                            try await UserManager.shared.updateHabitTime(
+                                                habit: Habit(
+                                                    id: event.id.uuidString,
+                                                    userId: AuthenticationManager.shared.getAuthenticatedUser().uid,
+                                                    title: event.title,
+                                                    description: "",
                                                     startTime: event.startTime,
-                                                    endTime: event.endTime)
-                                            } catch {
-                                                // handle error
-                                            }
+                                                    endTime: event.endTime,
+                                                    iconName: ""),
+                                                startTime: event.startTime,
+                                                endTime: event.endTime)
+                                        } catch {
+                                            // handle error
                                         }
                                     }
-                                    
-                                    offset = .zero
-                                    isDragging = false
-                                    editModeEnabled = false
                                 }
-                            }
-                        default:
-                            // No drag, just long press end
-                            break
-                        }
-                    })
         
-        .gesture(
-            editModeEnabled ? DragGesture()
-                .onChanged { value in
-                    if !isDragging {
-                        dragAnchorTime = snapToNearest15Minutes(event.startTime)
-                    }
-                    
-                    offset = value.translation
-                    isDragging = true
-                    
-                    let deltaHours = value.translation.height / hourHeight
-                    let deltaSeconds = deltaHours * 3600
-                    let newTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
-                    previewedStartTime = snapToNearest15Minutes(newTime)
-                }
-                .onEnded { value in
-                    withAnimation(.spring()) {
-                        let deltaHours = value.translation.height / hourHeight
-                        let deltaSeconds = deltaHours * 3600
-                        
-                        let newStartTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
-                        
-                        let originalDuration = event.endTime.timeIntervalSince(event.startTime)
-                        event.startTime = snapToNearest15Minutes(newStartTime)
-                        event.endTime = event.startTime.addingTimeInterval(originalDuration)
-                        
-                        if (event.sourceType == .habit) {
-                            Task {
-                                do {
-                                    try await UserManager.shared.updateHabitTime(
-                                        habit: Habit(
-                                            id: event.id.uuidString,
-                                            userId: AuthenticationManager.shared.getAuthenticatedUser().uid,
-                                            title: event.title,
-                                            description: "",
-                                            startTime: event.startTime,
-                                            endTime: event.endTime,
-                                            iconName: ""),
-                                        startTime: event.startTime,
-                                        endTime: event.endTime)
-                                } catch {
-                                    // handle error
-                                }
+                                offset = .zero
+                                isDragging = false
+                                editModeEnabled = false;
                             }
                         }
-                        
-                        offset = .zero
-                        isDragging = false
-                        editModeEnabled = false;
-                    }
-                }
-            : nil
-        )
+                    : nil
+                )
+                
+            // end event card
+            
+        }
+        .disabled(isNavigating)
+        
+        
+//        .gesture(
+//            editModeEnabled ? DragGesture()
+//                .onChanged { value in
+//                    if !isDragging {
+//                        dragAnchorTime = snapToNearest15Minutes(event.startTime)
+//                    }
+//                    
+//                    offset = value.translation
+//                    isDragging = true
+//                    
+//                    let deltaHours = value.translation.height / hourHeight
+//                    let deltaSeconds = deltaHours * 3600
+//                    let newTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
+//                    previewedStartTime = snapToNearest15Minutes(newTime)
+//                }
+//                .onEnded { value in
+//                    withAnimation(.spring()) {
+//                        let deltaHours = value.translation.height / hourHeight
+//                        let deltaSeconds = deltaHours * 3600
+//                        
+//                        let newStartTime = dragAnchorTime.addingTimeInterval(deltaSeconds)
+//                        
+//                        let originalDuration = event.endTime.timeIntervalSince(event.startTime)
+//                        event.startTime = snapToNearest15Minutes(newStartTime)
+//                        event.endTime = event.startTime.addingTimeInterval(originalDuration)
+//                        
+//                        if (event.sourceType == .habit) {
+//                            Task {
+//                                do {
+//                                    try await UserManager.shared.updateHabitTime(
+//                                        habit: Habit(
+//                                            id: event.id.uuidString,
+//                                            userId: AuthenticationManager.shared.getAuthenticatedUser().uid,
+//                                            title: event.title,
+//                                            description: "",
+//                                            startTime: event.startTime,
+//                                            endTime: event.endTime,
+//                                            iconName: ""),
+//                                        startTime: event.startTime,
+//                                        endTime: event.endTime)
+//                                } catch {
+//                                    // handle error
+//                                }
+//                            }
+//                        }
+//                        
+//                        offset = .zero
+//                        isDragging = false
+//                        editModeEnabled = false;
+//                    }
+//                }
+//            : nil
+//        )
         
         .navigationDestination(isPresented: $isNavigating) {
             if let habit = habitForDetail {
