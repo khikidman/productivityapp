@@ -25,6 +25,8 @@ struct AddHabitView: View {
     @State private var friends: [DBUser] = []
     @State private var isLoadingFriends = true
     @State private var sharedWith: [String] = []
+
+    @State private var selectedDayOfMonth: Int? = nil
     
     var onSave: (Habit) -> Void
     var onCancel: () -> Void
@@ -63,15 +65,12 @@ struct AddHabitView: View {
     
     var repeatRule: HabitRepeatRule {
         switch repeatType {
-        case .none:
-            return .none
         case .daily:
             return .daily
         case .weekly:
             return .weekly(Array(selectedWeekdays).sorted())
         case .monthly:
-            // For now just return empty → you can implement day-of-month selector later
-            return .monthly([])
+            return .monthly(selectedDayOfMonth.map { [$0] } ?? [])
         case .everyNDays:
             return .everyNDays(nDays)
         }
@@ -150,6 +149,31 @@ struct AddHabitView: View {
                                 
                                 Text("days")
                             }
+                            .padding(.bottom, 4)
+                        }
+                        if repeatType == .monthly {
+                            HStack {
+                                Text("On day")
+                                    .font(.subheadline)
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 6) {
+                                        ForEach(1...31, id: \.self) { day in
+                                            let selected = selectedDayOfMonth == day
+                                            Button(action: {
+                                                selectedDayOfMonth = selected ? nil : day
+                                            }) {
+                                                Text("\(day)")
+                                                    .padding(8)
+                                                    .padding(.horizontal, 6)
+                                                    .glassEffect(.regular.interactive().tint(selected ? .pink : .clear))
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.primary)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 8)
                             .padding(.bottom, 4)
                         }
                     }
@@ -310,13 +334,12 @@ struct AddHabitView: View {
 }
 
 enum HabitRepeatTypeOption: String, CaseIterable, Identifiable {
-    case none, daily, weekly, monthly, everyNDays
+    case daily, weekly, monthly, everyNDays
     
     var id: String { rawValue }
     
     var displayName: String {
         switch self {
-        case .none: return "Once"
         case .daily: return "Daily"
         case .weekly: return "Weekly"
         case .monthly: return "Monthly"
@@ -344,4 +367,5 @@ enum HabitRepeatTypeOption: String, CaseIterable, Identifiable {
         onCancel: {
         }
     )}
+
 

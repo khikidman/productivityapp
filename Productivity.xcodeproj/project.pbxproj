@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		471937AB2DFF86C800E5C349 /* EventColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */; };
+		47228A942E05F86100FB1B4A /* Coupled.icon in Resources */ = {isa = PBXBuildFile; fileRef = 47228A932E05F86100FB1B4A /* Coupled.icon */; };
 		476D711A2DE8ED6700F2AA25 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */; };
 		476D71212DEB9AD900F2AA25 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71202DEB9AD900F2AA25 /* FirebaseAnalytics */; };
 		476D71232DEB9AD900F2AA25 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71222DEB9AD900F2AA25 /* FirebaseAuth */; };
@@ -84,6 +85,7 @@
 
 /* Begin PBXFileReference section */
 		471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventColorPickerView.swift; sourceTree = "<group>"; };
+		47228A932E05F86100FB1B4A /* Coupled.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Coupled.icon; sourceTree = "<group>"; };
 		476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		47C6BF552DCFAA4C00915513 /* Productivity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Productivity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductivityApp.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		47C6BF4C2DCFAA4C00915513 = {
 			isa = PBXGroup;
 			children = (
+				47228A932E05F86100FB1B4A /* Coupled.icon */,
 				47C6BF572DCFAA4C00915513 /* Productivity */,
 				47C6BF682DCFAA4E00915513 /* ProductivityTests */,
 				47C6BF722DCFAA4E00915513 /* ProductivityUITests */,
@@ -501,6 +504,7 @@
 				47E294832DED222100130834 /* GoogleService-Info.plist in Resources */,
 				47C6BF602DCFAA4E00915513 /* Preview Assets.xcassets in Resources */,
 				47C6BF5D2DCFAA4E00915513 /* Assets.xcassets in Resources */,
+				47228A942E05F86100FB1B4A /* Coupled.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,8 +732,9 @@
 		47C6BF7A2DCFAA4E00915513 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Coupled;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Productivity/Preview Content\"";
@@ -758,8 +763,9 @@
 		47C6BF7B2DCFAA4E00915513 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Coupled;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Productivity/Preview Content\"";
