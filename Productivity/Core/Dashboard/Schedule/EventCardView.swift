@@ -454,5 +454,5 @@ extension EventCardView {
 }
 
 #Preview {
-    NewScheduleView()
+    NewScheduleView(selectedDay: .constant(Day(date: Date())))
 }

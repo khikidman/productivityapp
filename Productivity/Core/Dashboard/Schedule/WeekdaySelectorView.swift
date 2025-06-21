@@ -98,7 +98,7 @@ struct WeekdaySelector: View {
 }
 
 #Preview {
-    NewScheduleView()
+    NewScheduleView(selectedDay: .constant(Day(date: Date())))
         .environmentObject(HabitViewModel())
         .environmentObject(TodoViewModel())
 }

@@ -13,51 +13,32 @@ struct MainView: View {
     @EnvironmentObject var habitVM: HabitViewModel
     @EnvironmentObject var todoVM: TodoViewModel
     @Binding var showSignInView: Bool
+    @State private var selectedTab: MainTab = .dashboard
+    
+    @State var selectedDay: Day = Day.init(date: Date())
     
     var body: some View {
-            TabView {
-//                NavigationStack {
-//                    DashboardView()
-//                }
-//                .tabItem {
-//                    Label("Dashboard", systemImage: "calendar")
-//                }
-//                
-//                NavigationStack {
-//                    TaskView()
-//                        
-//                }
-//                .tabItem {
-//                    Label("Tasks", systemImage: "checkmark.circle")
-//                }
-//                
-//                if !showSignInView {
-//                    NavigationStack {
-//                        ProfileView(showSignInView: $showSignInView)
-//                            
-//                    }
-//                    .tabItem {
-//                        Label("Settings", systemImage: "gear")
-//                    }
-//                }
-                Tab {
+        TabView (selection: $selectedTab) {
+            Tab(value: MainTab.dashboard) {
                     NavigationStack {
-                        DashboardView()
+                        DashboardView(selectedTab: $selectedTab)
                     }
                 } label: {
                     Label("Dashboard", systemImage: "house")
                 }
                 
-                Tab {
+            Tab(value: MainTab.schedule) {
                     NavigationStack {
-                        TaskView()
+                        NewScheduleView(selectedDay: $selectedDay)
+                            .environmentObject(todoVM)
+                            .environmentObject(habitVM)
                     }
                 } label: {
-                    Label("Tasks", systemImage: "checkmark.circle")
+                    Label("Schedule", systemImage: "calendar.day.timeline.left")
                 }
                 
                 if (!showSignInView) {
-                    Tab {
+                    Tab(value: MainTab.settings) {
                         NavigationStack {
                             ProfileView()
                         }
@@ -66,7 +47,7 @@ struct MainView: View {
                     }
                 }
                 
-                Tab(role: .search) {
+            Tab(value: MainTab.search, role: .search) {
                     NavigationStack {
                         SearchView()
                     }
@@ -78,21 +59,27 @@ struct MainView: View {
             .tabViewStyle(.automatic)
             .tint(.pink)
             .backgroundStyle(.windowBackground)
-//            .tabBarMinimizeBehavior(.onScrollDown)
-//            .tabViewBottomAccessory {
-//                FitnessToolbarAccessory()
-//            }
-//            .toolbar {
-//                ToolbarItem(placement: .bottomBar) {
-//                    Button {
-//                        
-//                    } label: {
-//                        Image(systemName: "magnifyingglass")
-//                    }
-//                }
-//            }
+            .tabBarMinimizeBehavior(.onScrollDown)
+            .tabViewBottomAccessory {
+                switch selectedTab {
+                case .dashboard:
+                    FitnessToolbarAccessory()
+                case .tasks:
+                    Text("Temp")
+                case .settings:
+                    Text("Temp")
+                case .schedule:
+                    ScheduleBottomBarAccessory(selectedDay: $selectedDay)
+                case .search:
+                    Text("Temp")
+                }
+            }
         
     }
+}
+
+enum MainTab: Hashable {
+    case dashboard, tasks, settings, schedule, search
 }
 
 #Preview {
@@ -100,3 +87,4 @@ struct MainView: View {
         .environmentObject(TodoViewModel())
         .environmentObject(HabitViewModel())
 }
+

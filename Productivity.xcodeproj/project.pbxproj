@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		471937AB2DFF86C800E5C349 /* EventColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */; };
 		47228A942E05F86100FB1B4A /* Coupled.icon in Resources */ = {isa = PBXBuildFile; fileRef = 47228A932E05F86100FB1B4A /* Coupled.icon */; };
+		47228A962E06205500FB1B4A /* ScheduleBottomBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47228A952E06205500FB1B4A /* ScheduleBottomBarAccessory.swift */; };
 		476D711A2DE8ED6700F2AA25 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */; };
 		476D71212DEB9AD900F2AA25 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71202DEB9AD900F2AA25 /* FirebaseAnalytics */; };
 		476D71232DEB9AD900F2AA25 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71222DEB9AD900F2AA25 /* FirebaseAuth */; };
@@ -86,6 +87,7 @@
 /* Begin PBXFileReference section */
 		471937AA2DFF86BB00E5C349 /* EventColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventColorPickerView.swift; sourceTree = "<group>"; };
 		47228A932E05F86100FB1B4A /* Coupled.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Coupled.icon; sourceTree = "<group>"; };
+		47228A952E06205500FB1B4A /* ScheduleBottomBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleBottomBarAccessory.swift; sourceTree = "<group>"; };
 		476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		47C6BF552DCFAA4C00915513 /* Productivity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Productivity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductivityApp.swift; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 				47E294AC2DEFAD8800130834 /* EventCardView.swift */,
 				47E294B42DF65C0A00130834 /* Day.swift */,
 				47E294B62DF65D6900130834 /* Week.swift */,
+				47228A952E06205500FB1B4A /* ScheduleBottomBarAccessory.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 			files = (
 				47E294AD2DEFAD8800130834 /* EventCardView.swift in Sources */,
 				476D711A2DE8ED6700F2AA25 /* TaskDetailView.swift in Sources */,
+				47228A962E06205500FB1B4A /* ScheduleBottomBarAccessory.swift in Sources */,
 				47C6BFA82DE7FD4E00915513 /* HourGrid.swift in Sources */,
 				47C6BFA42DE7FCC100915513 /* WeekdayHeaderView.swift in Sources */,
 				47C6BF902DE7E93100915513 /* HabitCategorizer.swift in Sources */,

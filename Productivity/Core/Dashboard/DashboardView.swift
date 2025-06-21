@@ -13,6 +13,7 @@ struct DashboardView: View{
     @State private var showAddTask = false
     @State private var newTaskTitle = ""
     @State private var newTaskStartTime = Date()
+    @Binding var selectedTab: MainTab
 
     
     @EnvironmentObject var todoVM: TodoViewModel
@@ -25,9 +26,10 @@ struct DashboardView: View{
             List {
                 Section {
                     NavigationLink {
-                        NewScheduleView()
+                        NewScheduleView(selectedDay: .constant(Day(date: Date())))
                             .environmentObject(todoVM)
                             .environmentObject(habitVM)
+                        
                     } label: {
                         Label() {
                             Text("Schedule")

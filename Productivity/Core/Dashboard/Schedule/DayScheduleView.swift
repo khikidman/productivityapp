@@ -62,6 +62,7 @@ struct DayScheduleView: View {
                 .padding(.leading, 65)
             }
         }
+        .tabBarMinimizeBehavior(.onScrollDown)
         .onAppear {
             Task {
                 do {
@@ -134,7 +135,7 @@ extension DayScheduleViewModel {
 }
 
 #Preview {
-    NewScheduleView()
+    NewScheduleView(selectedDay: .constant(Day(date: Date())))
         .environmentObject(TodoViewModel())
         .environmentObject(HabitViewModel())
 }

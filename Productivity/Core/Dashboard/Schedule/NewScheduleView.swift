@@ -42,12 +42,12 @@ struct NewScheduleView: View {
     @EnvironmentObject var todoVM: TodoViewModel
     @EnvironmentObject var habitVM: HabitViewModel
     
-    @State var selectedDay: Day = Day.init(date: Date())
+    @Binding var selectedDay: Day
     
     var body: some View {
         VStack {
-            WeekdayHeaderView()
-            WeekdaySelectorView(weekVM: weekVM, selectedDay: $selectedDay)
+//            WeekdayHeaderView()
+//            WeekdaySelectorView(weekVM: weekVM, selectedDay: $selectedDay)
             DayScheduleView(selectedDay: $selectedDay)
                 .environmentObject(todoVM)
                 .environmentObject(habitVM)
@@ -107,7 +107,7 @@ struct NewScheduleView: View {
 
 #Preview {
     NavigationStack {
-        NewScheduleView()
+        NewScheduleView(selectedDay: .constant(Day(date: Date())))
             .environmentObject(TodoViewModel())
             .environmentObject(HabitViewModel())
     }
