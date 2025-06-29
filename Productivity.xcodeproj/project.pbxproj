@@ -39,6 +39,7 @@
 		47C6BFA82DE7FD4E00915513 /* HourGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6BFA72DE7FD4E00915513 /* HourGrid.swift */; };
 		47C6BFAA2DE7FF4500915513 /* ScheduledEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6BFA92DE7FF4500915513 /* ScheduledEvent.swift */; };
 		47C6BFAC2DE8072200915513 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6BFAB2DE8072200915513 /* DashboardView.swift */; };
+		47C7C7132E11D9BB00578CEC /* TabBarBottomAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C7C7122E11D9BB00578CEC /* TabBarBottomAccessory.swift */; };
 		47D01EEF2DFE4AF70043D522 /* FitnessToolbarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D01EEE2DFE4AF70043D522 /* FitnessToolbarAccessory.swift */; };
 		47E294712DEBAD3700130834 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E294702DEBAD1B00130834 /* AuthenticationView.swift */; };
 		47E294732DEBAE4400130834 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E294722DEBAE4400130834 /* SignInEmailView.swift */; };
@@ -118,6 +119,7 @@
 		47C6BFA72DE7FD4E00915513 /* HourGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourGrid.swift; sourceTree = "<group>"; };
 		47C6BFA92DE7FF4500915513 /* ScheduledEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledEvent.swift; sourceTree = "<group>"; };
 		47C6BFAB2DE8072200915513 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		47C7C7122E11D9BB00578CEC /* TabBarBottomAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarBottomAccessory.swift; sourceTree = "<group>"; };
 		47D01EEE2DFE4AF70043D522 /* FitnessToolbarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessToolbarAccessory.swift; sourceTree = "<group>"; };
 		47E294702DEBAD1B00130834 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		47E294722DEBAE4400130834 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 		47C6BF572DCFAA4C00915513 /* Productivity */ = {
 			isa = PBXGroup;
 			children = (
+				47C7C7112E11D9A400578CEC /* Concept Testing */,
 				47E294812DED212400130834 /* Info.plist */,
 				47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */,
 				47E2948E2DEEAFBA00130834 /* Core */,
@@ -237,6 +240,14 @@
 				47C6BF752DCFAA4E00915513 /* ProductivityUITestsLaunchTests.swift */,
 			);
 			path = ProductivityUITests;
+			sourceTree = "<group>";
+		};
+		47C7C7112E11D9A400578CEC /* Concept Testing */ = {
+			isa = PBXGroup;
+			children = (
+				47C7C7122E11D9BB00578CEC /* TabBarBottomAccessory.swift */,
+			);
+			path = "Concept Testing";
 			sourceTree = "<group>";
 		};
 		47E294842DED25A200130834 /* Utilities */ = {
@@ -547,6 +558,7 @@
 				47D01EEF2DFE4AF70043D522 /* FitnessToolbarAccessory.swift in Sources */,
 				47E294732DEBAE4400130834 /* SignInEmailView.swift in Sources */,
 				47E294882DED2BBA00130834 /* SignInGoogleHelper.swift in Sources */,
+				47C7C7132E11D9BB00578CEC /* TabBarBottomAccessory.swift in Sources */,
 				47C6BF892DDCB10E00915513 /* Habit.swift in Sources */,
 				47EB872D2DFBAF8D00319849 /* SearchView.swift in Sources */,
 				47C6BFA02DE7ED7E00915513 /* ScheduleView.swift in Sources */,

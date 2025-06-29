@@ -12,6 +12,11 @@ struct HabitCardView: View {
     @EnvironmentObject var habitVM: HabitViewModel
     @Binding var habit: Habit
     
+    // hardcoding and might need refactored later
+    @State var todayComplete: Bool = false
+    @State var yesterdayComplete: Bool = false
+    @State var dayBeforeYesterdayComplete: Bool = false
+    
     var body: some View {
         HStack {
             Image(systemName: habit.iconName)
@@ -33,18 +38,25 @@ struct HabitCardView: View {
             Spacer()
             
             HStack(spacing: 1) {
-                Image(systemName: /*habit.isCompleted(on: Date().addingTimeInterval(-172800).stripTime()) ? "checkmark.square.fill" : */"square")
+                
+                Image(systemName: dayBeforeYesterdayComplete ? "checkmark.square.fill" : "square")
                     .foregroundStyle(.gray)
                     .font(.system(size: 12))
-                Image(systemName: /*habit.isCompleted(on: Date().addingTimeInterval(-86400).stripTime()) ? "checkmark.square.fill" : */"square")
+                Image(systemName: yesterdayComplete ? "checkmark.square.fill" : "square")
                     .foregroundStyle(.gray)
                     .font(.system(size: 14))
                 Button{
-//                    if let index = habitVM.habitItems.firstIndex(where: { $0.id == habit.id }) {
-//                                habitVM.habitItems[index].toggleCompletion(on: Date())
-//                            }
+                    Task {
+                        do {
+                            try await habit.toggleCompletion(on: Date())
+                            todayComplete = try await habit.isCompleted(on: Date())
+                        } catch {
+                            
+                        }
+                    }
+                    
                 } label: {
-                    Image(systemName: /*habit.isCompleted(on: Date().stripTime()) ? "checkmark.square.fill" : */"square")
+                    Image(systemName: todayComplete ? "checkmark.square.fill" : "square")
                         .foregroundStyle(.pink)
                         .font(.system(size: 24))
                 }
@@ -61,6 +73,18 @@ struct HabitCardView: View {
                 Label("Delete", systemImage:"trash")
             }
             .tint(.red)
+        }
+        // Hardcoded last 2 days of completion
+        .onAppear {
+            Task {
+                do {
+                    todayComplete = try await habit.isCompleted(on: Date().stripTime())
+                    yesterdayComplete = try await habit.isCompleted(on: Date().addingTimeInterval(-86400).stripTime())
+                    dayBeforeYesterdayComplete = try await habit.isCompleted(on: Date().addingTimeInterval(-172800).stripTime())
+                } catch {
+                    
+                }
+            }
         }
     }
 }

@@ -70,9 +70,9 @@ struct DayScheduleView: View {
                         habits: HabitManager.shared.loadHabits(for: selectedDay.date),
                         todos: todoVM.todoItems
                     )
-                    print(viewModel.events)
+//                    print(viewModel.events)
                 } catch {
-                    print("failure")
+                    print("failure to load dayEvents")
                 }
             }
         }
@@ -83,10 +83,10 @@ struct DayScheduleView: View {
                         habits: HabitManager.shared.loadHabits(for: selectedDay.date),
                         todos: todoVM.todoItems
                     )
-                    print(selectedDay.date)
-                    print(viewModel.events)
+//                    print(selectedDay.date)
+//                    print(viewModel.events)
                 } catch {
-                    print("failure")
+                    print("failure to load dayEvents")
                 }
             }
         }

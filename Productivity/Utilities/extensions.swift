@@ -113,3 +113,15 @@ extension Color {
         return String(format: "#%02X%02X%02X", r, g, b)
     }
 }
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool,
+                             transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}

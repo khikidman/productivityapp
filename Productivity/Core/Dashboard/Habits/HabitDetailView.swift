@@ -11,6 +11,9 @@ import SwiftUI
 struct HabitDetailView: View {
     var habit: Habit
     
+    @State private var completionStatus: [Date: Bool] = [:]
+    @State private var loadingStatus: [Date: Bool] = [:]
+    
     var body: some View {
         let formatter: DateFormatter = {
             let f = DateFormatter()
@@ -25,82 +28,131 @@ struct HabitDetailView: View {
             return formatter.shortWeekdaySymbols.map { String($0.prefix(1)) }
         }()
         
+        let monthYearFormatter: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.dateFormat = "LLLL yyyy"
+            return f
+        }()
+        
         let calendar = Calendar.current
         let currentDate = Date()
         let range = calendar.range(of: .day, in: .month, for: currentDate)!
-        let weeksInMonth = calendar.range(of: .weekOfMonth, in: .month, for: currentDate)!
+        let daysInMonth = Array(range)
+        let firstOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: currentDate))!
+        let daysGrid: [[Date]] = stride(from: 0, to: daysInMonth.count, by: 7).map { weekOffset in
+            (0..<7).compactMap { weekdayOffset -> Date? in
+                let dayIndex = weekOffset + weekdayOffset
+                guard dayIndex < daysInMonth.count else { return nil }
+                let day = daysInMonth[dayIndex]
+                var components = calendar.dateComponents([.year, .month], from: currentDate)
+                components.day = day
+                return calendar.date(from: components)
+            }
+        }
+        
         
         VStack {
-            ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
-                RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.0))
-                    .stroke(Color.gray.opacity(0.6), lineWidth: 1)
-                    
-                VStack() {
-                    HStack() {
-                        Text("Activity")
-                        Spacer()
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 8).fill(.pink.opacity(0.2))
-                                .overlay {
-                                    Image(systemName: "circle.circle")
-                                }
-                                .frame(width: 36)
-                        }
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 8).fill(.pink.opacity(0.2))
-                                .overlay {
-                                    Image(systemName: "ellipsis")
-                                }
-                                .frame(width: 36)
-                        }
-                    }
-                    .frame(height: 28)
-                    Grid(alignment: .topLeading, horizontalSpacing: 14, verticalSpacing: 12){
-                        GridRow {
-                            ForEach(weekdayLetters, id: \.self) { weekdayLetter in
-                                Text(weekdayLetter)
-                                    .frame(maxWidth: .infinity)
-                                    .font(.caption)
-                            }
-                        }
-                        ForEach(Array(weeksInMonth), id:\.self) { weekInMonth in
+            
+            NavigationStack {
+//                List {
+                    Section {
+//                        NavigationLink {
+//                            HabitDetailView(habit: habit)
+//                        } label: {
+//                            Label(monthYearFormatter.string(from: currentDate), systemImage: "chart.bar.xaxis.ascending")
+//                                .accentColor(Color.pink)
+//                        }
+//                        .buttonStyle(.plain)
+                        
+                        Grid(alignment: .topLeading, horizontalSpacing: 14, verticalSpacing: 16) {
                             GridRow {
-                                if let daysInWeek = calendar.range(of: .weekday, in: .weekOfMonth, for: currentDate) {
-                                    ForEach(Array(daysInWeek), id: \.self) { dayInWeek in
-                                        
-                                        let date: Date = {
-                                            var components = calendar.dateComponents([.year, .month], from: currentDate)
-                                            components.weekOfMonth = weekInMonth
-                                            components.weekday = dayInWeek
-                                            return calendar.date(from: components) ?? Date()
-                                        }()
-                                        
+                                ForEach(weekdayLetters, id: \.self) { weekdayLetter in
+                                    Text(weekdayLetter)
+                                        .frame(maxWidth: .infinity)
+                                        .font(.caption)
+                                }
+                            }
+                            ForEach(daysGrid, id: \.[0]) { week in
+                                GridRow {
+                                    ForEach(week, id: \.self) { date in
+                                        let isThisMonth = calendar.component(.month, from: date) == calendar.component(.month, from: currentDate)
+                                        // Future: specialize for weekly, n-day, monthly
+                                        let isScheduled = habit.isScheduled(for: date)
+                                        let isCompleted = completionStatus[date] ?? false
+                                        let isLoading = loadingStatus[date] ?? false
                                         Button {
-                                            
+                                            if isScheduled {
+                                                loadingStatus[date] = true
+                                                Task {
+                                                    do {
+                                                        switch habit.repeatRule {
+                                                        case .daily, .weekly, .monthly, .everyNDays:
+                                                            try await HabitManager.shared.toggleCompletion(for: habit, on: date)
+                                                            print("Habit toggled on \(date)")
+                                                            let completed = try await UserManager.shared.isCompleted(habit: habit, date: date)
+                                                            completionStatus[date] = completed
+                                                        default:
+                                                            // TODO: Add custom toggle completion logic for weekly, monthly, everyNDays rules.
+                                                            break
+                                                        }
+                                                    } catch {
+                                                        // Optionally handle error
+                                                    }
+                                                    loadingStatus[date] = false
+                                                }
+                                            }
                                         } label: {
-                                            let dateMonth = calendar.component(.month, from: date)
-                                            let currentMonth = calendar.component(.month, from: currentDate)
-                                            Image(systemName: /*habit.isCompleted(on: date) ? "checkmark.square.fill" : */"square")
-                                                .foregroundStyle(dateMonth == currentMonth ? .pink : .gray)
-                                                .frame(width: .infinity, height: 20)
-                                                .font(.system(size: 28))
+                                            ZStack {
+                                                RoundedRectangle(cornerRadius: 6)
+                                                    .stroke(isScheduled ? .pink : .gray.opacity(0.2), lineWidth: 1)
+                                                    .background(
+                                                        (isCompleted ? Color.pink.opacity(0.25) : Color.clear)
+                                                            .cornerRadius(6)
+                                                    )
+                                                if isLoading {
+                                                    ProgressView()
+                                                        .frame(width: 24, height: 24)
+                                                } else {
+                                                    Image(systemName: isCompleted ? "checkmark.square.fill" : "square")
+                                                        .foregroundStyle(isScheduled ? .pink : .gray)
+                                                        .frame(width: 24, height: 24)
+                                                        .font(.system(size: 22))
+                                                    Text("\(calendar.component(.day, from: date))")
+                                                        .font(.caption2)
+                                                        .foregroundColor(isScheduled ? .primary : .gray)
+                                                        .offset(y: 16)
+                                                }
+                                            }
+                                            .frame(width: 32, height: 48)
+                                            .offset(y: 16)
+                                            .opacity(isThisMonth ? 1 : 0.25)
                                         }
+                                        .disabled(!isScheduled)
                                     }
                                 }
                             }
                         }
+                        .padding(.top, 6)
+                        .padding(.bottom, 8)
+                        .onAppear {
+                            Task {
+                                for day in daysInMonth {
+                                    var components = calendar.dateComponents([.year, .month], from: currentDate)
+                                    components.day = day
+                                    if let date = calendar.date(from: components), habit.isScheduled(for: date) {
+                                        let completed = try? await UserManager.shared.isCompleted(habit: habit, date: date)
+                                        completionStatus[date] = completed ?? false
+                                    }
+                                }
+                            }
+                            Task {
+                                print(daysGrid)
+                            }
+                        }
                     }
-                    .padding(.vertical, 8)
-                }
-                .padding(16)
+//                }
             }
-            .navigationTitle(habit.title)
-            .frame(width: .infinity, height: 200)
-            .padding(16)
             
             ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
                 RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.0))
@@ -145,3 +197,15 @@ struct HabitDetailView: View {
         return quot + (rem == 0 ? 0 : 1)
     }
 }
+
+#Preview {
+    HabitDetailView(habit: Habit(id: "abcdefg", userId: "abcdefg", title: "Test", description: "Test Description", createdDate: Date().addingTimeInterval(-3600), startTime: Date().addingTimeInterval(-1800), endTime: Date(), iconName: "repeat", colorHex: "#ff375f", category: "Uncategorized", repeatRule: .daily, sharedWith: []))
+}
+
+
+#Preview {
+    NavigationStack {
+        HabitDetailView(habit: Habit(id: "abcdefg", userId: "abcdefg", title: "Test", description: "Test Description", createdDate: Date().addingTimeInterval(-3600), startTime: Date().addingTimeInterval(-1800), endTime: Date(), iconName: "repeat", colorHex: "#ff375f", category: "Uncategorized", repeatRule: .daily, sharedWith: []))
+    }
+}
+

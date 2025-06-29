@@ -28,6 +28,7 @@ class HabitViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     private func loadHabits() async throws {
         do {
             let userId = try AuthenticationManager.shared.getAuthenticatedUser().uid

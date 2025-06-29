@@ -11,24 +11,23 @@ struct FitnessToolbarAccessory: View {
     @Environment(\.tabViewBottomAccessoryPlacement) var placement
     
     var body: some View {
-        //        TabView {
-        //            Tab {
-        HStack (alignment: .center) {
-            Image(systemName: "dumbbell.fill")
-            VStack(alignment: .leading) {
-                Text("Active Workout")
-                Text("Push Day - Chest")
-                    .font(.system(size: 13))
+        if (placement == .inline) {
+            Text("hello")
+        } else {
+            HStack {
+                HStack {
+                    Image(systemName: "dumbbell.fill")
+                    VStack(alignment: .leading) {
+                        Text("Active Workout")
+                        Text("Push Day - Chest")
+                            .font(.system(size: 13))
+                    }
+                    Spacer()
+                    Image(systemName: "pause.fill")
+                }
+                .padding()
             }
-            Spacer()
-            Image(systemName: "pause.fill")
-            
         }
-        .padding()
-//    }
-//}
-//        .tabViewStyle(.page(indexDisplayMode: .never))
-        
     }
 }
 

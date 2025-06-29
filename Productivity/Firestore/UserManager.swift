@@ -210,6 +210,37 @@ final class UserManager {
         return try await userDocument(userId: userId).collection("habits").document(habitId).getDocument(as: Habit.self)
     }
     
+    func addCompletion(habit: Habit, date: Date) async throws {
+        let userId = try AuthenticationManager.shared.getAuthenticatedUser().uid
+        try await userDocument(userId: userId).collection("habits").document(habit.id).collection("completions").addDocument(data: ["date": date])
+    }
+    
+    func removeCompletion(habit: Habit, date: Date) async throws {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        guard let endOfDay = Calendar.current.date(byAdding: DateComponents(day: 1, second: -1), to: startOfDay) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let userId = try AuthenticationManager.shared.getAuthenticatedUser().uid
+        let query = try await userDocument(userId: userId).collection("habits").document(habit.id).collection("completions").whereField("date", isGreaterThanOrEqualTo: startOfDay).whereField("date", isLessThanOrEqualTo: endOfDay).getDocuments()
+        
+        for document in query.documents {
+            try await userDocument(userId: userId).collection("habits").document(habit.id).collection("completions").document(document.documentID).delete()
+        }
+    }
+    
+    func isCompleted(habit: Habit, date: Date) async throws -> Bool {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        guard let endOfDay = Calendar.current.date(byAdding: DateComponents(day: 1, second: -1), to: startOfDay) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let userId = try AuthenticationManager.shared.getAuthenticatedUser().uid
+        let query = try await userDocument(userId: userId).collection("habits").document(habit.id).collection("completions").whereField("date", isGreaterThanOrEqualTo: startOfDay).whereField("date", isLessThanOrEqualTo: endOfDay).getDocuments()
+        
+        return !query.isEmpty
+    }
+    
     func updateHabitTime(habit: Habit, startTime: Date?, endTime: Date?) async throws {
         
         let data: [String:Any] = [

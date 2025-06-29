@@ -9,12 +9,11 @@ import SwiftUI
 
 class AccessoryWeekViewModel: ObservableObject {
     @Published var weeks: [Week] = []
-    @Published var selectedWeek: Int = 10
+    @Published var selectedWeek: Int = 0
     
     func loadWeeks(centeredOn date: Date) {
-        weeks = []
         let calendar = Calendar.current
-        
+        weeks = []
         for i in -10...10 {
             if let weekDate = calendar.date(byAdding: .weekOfYear, value: i, to: date) {
                 weeks.append(calendar.generateWeek(for: weekDate))
@@ -35,26 +34,22 @@ struct ScheduleBottomBarAccessory: View {
     @Binding var selectedDay: Day
 
     var body: some View {
-        if placement == .inline {
-            Text("Minimized")
-        } else {
-            TabView(selection: $accessoryViewModel.selectedWeek) {
-                ForEach(accessoryViewModel.weeks.indices, id:\.self) { weekIndex in
-                    Tab(value: weekIndex) {
-                        HStack {
-                            ForEach(accessoryViewModel.weeks[weekIndex].days) { day in
-                                WeekdaySelector(day: day, selectedDay: $selectedDay)
-                            }
+        TabView(selection: $accessoryViewModel.selectedWeek) {
+            ForEach(accessoryViewModel.weeks.indices, id:\.self) { weekIndex in
+                Tab(value: weekIndex) {
+                    HStack {
+                        ForEach(accessoryViewModel.weeks[weekIndex].days) { day in
+                            WeekdaySelector(day: day, selectedDay: $selectedDay)
                         }
-                        .padding(5)
                     }
+                    .padding(5)
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .onAppear {
-                accessoryViewModel.loadWeeks(centeredOn: Date())
-                selectedDay = accessoryViewModel.currentDay()
-            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .onAppear {
+            accessoryViewModel.loadWeeks(centeredOn: Date())
+            selectedDay = accessoryViewModel.currentDay()
         }
     }
 }

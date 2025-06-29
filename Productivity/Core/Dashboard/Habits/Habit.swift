@@ -19,18 +19,17 @@ struct Habit: Identifiable, Codable {
 //        completions.insert(date.stripTime())
 //    }
 //    
-//    mutating func toggleCompletion(on date: Date = Date()) {
-//        let day = date.stripTime()
-//        if completions.contains(day) {
-//            completions.remove(day)
-//        } else {
-//            completions.insert(day)
-//        }
-//    }
+    func toggleCompletion(on date: Date = Date()) async throws {
+        try await HabitManager.shared.toggleCompletion(for: self, on: date)
+    }
 //    
 //    func isCompleted(on date: Date = Date()) -> Bool {
 //        return completions.contains(date.stripTime())
 //    }
+    
+    func isCompleted(on date: Date) async throws -> Bool {
+        return try await UserManager.shared.isCompleted(habit: self, date: date)
+    }
     
     init(id: String, userId: String, title: String, description: String, createdDate: Date = Date(), startTime: Date = Date(), endTime: Date? = nil, iconName: String = "repeat", colorHex: String = "#ff375f", category: String = "Uncategorized", repeatRule: HabitRepeatRule = .daily, sharedWith: [String] = []) {
         self.id = id
@@ -168,6 +167,14 @@ final class HabitManager {
     
     func shareHabit(habit: Habit, with recipientIds: [String]) async throws {
         try await UserManager.shared.shareHabit(habit: habit, with: recipientIds)
+    }
+    
+    func toggleCompletion(for habit: Habit, on date: Date) async throws {
+        if try await UserManager.shared.isCompleted(habit: habit, date: date) {
+            try await UserManager.shared.removeCompletion(habit: habit, date: date)
+        } else {
+            try await UserManager.shared.addCompletion(habit: habit, date: date)
+        }
     }
     
 }
