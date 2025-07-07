@@ -61,20 +61,10 @@ struct MainView: View {
             .tint(.pink)
             .backgroundStyle(.windowBackground)
             .tabBarMinimizeBehavior(.onScrollDown)
-//            .if(selectedTab == .schedule) { this in
-//                this.tabViewBottomAccessory {
-//                    ScheduleBottomBarAccessory(selectedDay: $selectedDay)
-//                }
-//            }
-//            .if(selectedTab == .dashboard) { this in
-//                this.tabViewBottomAccessory {
-//                    FitnessToolbarAccessory()
-//                }
-//            }
             .tabViewBottomAccessory {
                 switch selectedTab {
                 case .dashboard:
-                    FitnessToolbarAccessory()
+                    TabBarBottomAccessory()
                 case .tasks:
                     Text("Temp")
                 case .settings:

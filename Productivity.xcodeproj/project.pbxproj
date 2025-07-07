@@ -13,6 +13,7 @@
 		476D711A2DE8ED6700F2AA25 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */; };
 		476D71212DEB9AD900F2AA25 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71202DEB9AD900F2AA25 /* FirebaseAnalytics */; };
 		476D71232DEB9AD900F2AA25 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 476D71222DEB9AD900F2AA25 /* FirebaseAuth */; };
+		4792081C2E171A1100306C00 /* NewHabitCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792081B2E171A1100306C00 /* NewHabitCardView.swift */; };
 		47C6BF592DCFAA4C00915513 /* ProductivityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */; };
 		47C6BF5B2DCFAA4C00915513 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C6BF5A2DCFAA4C00915513 /* TaskView.swift */; };
 		47C6BF5D2DCFAA4E00915513 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C6BF5C2DCFAA4E00915513 /* Assets.xcassets */; };
@@ -90,6 +91,7 @@
 		47228A932E05F86100FB1B4A /* Coupled.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Coupled.icon; sourceTree = "<group>"; };
 		47228A952E06205500FB1B4A /* ScheduleBottomBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleBottomBarAccessory.swift; sourceTree = "<group>"; };
 		476D71192DE8ED6700F2AA25 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
+		4792081B2E171A1100306C00 /* NewHabitCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitCardView.swift; sourceTree = "<group>"; };
 		47C6BF552DCFAA4C00915513 /* Productivity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Productivity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C6BF582DCFAA4C00915513 /* ProductivityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductivityApp.swift; sourceTree = "<group>"; };
 		47C6BF5A2DCFAA4C00915513 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				47C7C7122E11D9BB00578CEC /* TabBarBottomAccessory.swift */,
+				4792081B2E171A1100306C00 /* NewHabitCardView.swift */,
 			);
 			path = "Concept Testing";
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				47C6BF902DE7E93100915513 /* HabitCategorizer.swift in Sources */,
 				47E294922DEEB0D000130834 /* AuthenticationViewModel.swift in Sources */,
 				47C6BF9A2DE7EB2600915513 /* HabitDetailView.swift in Sources */,
+				4792081C2E171A1100306C00 /* NewHabitCardView.swift in Sources */,
 				47E294A92DEFA47000130834 /* NewScheduleView.swift in Sources */,
 				47C6BF982DE7EAEF00915513 /* MainView.swift in Sources */,
 				47C6BF942DE7E9FA00915513 /* AddTaskView.swift in Sources */,

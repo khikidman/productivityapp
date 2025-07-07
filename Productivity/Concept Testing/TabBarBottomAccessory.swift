@@ -8,84 +8,23 @@
 import SwiftUI
 
 struct TabBarBottomAccessory: View {
-    @State var selectedTab: MainTabTest = .dashboard
+    @Environment(\.tabViewBottomAccessoryPlacement) var placement
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            Tab(value: MainTabTest.dashboard) {
-                NavigationStack {
-                    List {
-                        Section("Section 1") {
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                        }
-                        Section("Section 1") {
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                            NavigationLink {
-                                EmptyView()
-                            } label: {
-                                Label("Xbox", systemImage: "xbox")
-                            }
-                        }
-                    }
-                }
+        HStack {
+            Button {
+                
             } label: {
-                Label("Dashboard", systemImage: "house")
+                Label("Box Breathing", systemImage: "clock")
             }
-            Tab(value: MainTabTest.schedule) {
-                EmptyView()
-            } label: {
-                Label("Schedule", systemImage: "calendar.day.timeline.left")
+            .frame(maxWidth: .infinity)
+            .glassEffect(.regular.interactive())
+            Button("Timer") {
+                
             }
-            Tab(value: MainTabTest.settings) {
-                EmptyView()
-            } label: {
-                Label("Settings", systemImage: "gear")
-            }
+            .frame(maxWidth: .infinity)
+            .glassEffect(.regular.interactive())
         }
-        .tabBarMinimizeBehavior(.onScrollDown)
-        .tabViewBottomAccessory {
-            FitnessToolbarAccessory()
-        }
+        .padding(.horizontal, 8)
     }
-}
-
-enum MainTabTest: Hashable {
-    case dashboard, tasks, settings, schedule, search
-}
-
-#Preview {
-    TabBarBottomAccessory()
 }

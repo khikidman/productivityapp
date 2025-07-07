@@ -7,53 +7,95 @@
 
 import SwiftUI
 
+enum ShiftDirection {
+    case backward
+    case forward
+}
+
 class AccessoryWeekViewModel: ObservableObject {
     @Published var weeks: [Week] = []
-    @Published var selectedWeek: Int = 0
+    @Published var selectedDay: Day = Day(date: Date())
+    @Published var targetedWeekStart: Date?
     
-    func loadWeeks(centeredOn date: Date) {
+    func initWeeks(centeredOn date: Date, windowRadius: Int = 1) {
         let calendar = Calendar.current
-        weeks = []
-        for i in -10...10 {
-            if let weekDate = calendar.date(byAdding: .weekOfYear, value: i, to: date) {
-                weeks.append(calendar.generateWeek(for: weekDate))
-            }
+        weeks = (-windowRadius...windowRadius).map { offset in
+            let weekStart = calendar.date(byAdding: .weekOfYear, value: offset, to: date)!
+            return calendar.generateWeek(for: weekStart)
         }
+        targetedWeekStart = weeks[weeks.count / 2].startDate
     }
     
-    func currentDay() -> Day {
-        let dayOfWeek = Calendar.current.dateComponents([.weekday], from: Date()).weekday!
-        return weeks[selectedWeek].days[dayOfWeek - 1]
+    func shift(in direction: ShiftDirection) {
+        let calendar = Calendar.current
+        switch direction {
+        case .backward:
+            let newWeekStart = calendar.date(byAdding: .weekOfYear, value: -1, to: weeks.first!.startDate)
+            weeks.insert(calendar.generateWeek(for: newWeekStart!), at: 0)
+            // Handle day selection update
+        case .forward:
+            let newWeekStart = calendar.date(byAdding: .weekOfYear, value: 1, to: weeks.last!.startDate)
+            weeks.append(calendar.generateWeek(for: newWeekStart!))
+            // Handle day selection update
+        }
     }
 }
 
 struct ScheduleBottomBarAccessory: View {
-    @Environment(\.tabViewBottomAccessoryPlacement) var placement
+    // @Environment(\.tabViewBottomAccessoryPlacement) var placement
     
-    @StateObject private var accessoryViewModel = AccessoryWeekViewModel()
+    @StateObject private var vm = AccessoryWeekViewModel()
     @Binding var selectedDay: Day
 
     var body: some View {
-        TabView(selection: $accessoryViewModel.selectedWeek) {
-            ForEach(accessoryViewModel.weeks.indices, id:\.self) { weekIndex in
-                Tab(value: weekIndex) {
-                    HStack {
-                        ForEach(accessoryViewModel.weeks[weekIndex].days) { day in
+        ScrollView(.horizontal) {
+            LazyHStack (alignment: .center) {
+                ForEach(vm.weeks) { week in
+                    HStack(alignment: .center) {
+                        ForEach(week.days) { day in
                             WeekdaySelector(day: day, selectedDay: $selectedDay)
                         }
                     }
-                    .padding(5)
+                    .frame(width: 336)
+                    .id(week.startDate)
                 }
             }
+            .scrollTargetLayout()
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
+        .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $vm.targetedWeekStart)
+        .onChange(of: vm.targetedWeekStart) { oldValue, newValue in
+            let lastWeek = vm.weeks.last!.startDate
+            let firstWeek = vm.weeks.first!.startDate
+            
+            if newValue == lastWeek {
+                vm.shift(in: .forward)
+            }
+            else if newValue == firstWeek {
+                vm.shift(in: .backward)
+            }
+        }
         .onAppear {
-            accessoryViewModel.loadWeeks(centeredOn: Date())
-            selectedDay = accessoryViewModel.currentDay()
+            vm.initWeeks(centeredOn: Date())
+            DispatchQueue.main.async {
+                vm.targetedWeekStart = vm.weeks[vm.weeks.count / 2].startDate
+                selectedDay = vm.weeks[vm.weeks.count / 2].days[Calendar.current.dateComponents([.weekday], from: Date()).weekday! - 1]
+                vm.selectedDay = vm.weeks[vm.weeks.count / 2].days[Calendar.current.component(.weekday, from: Date()) - 1]
+            }
         }
+        .frame(width: 336, alignment: .center)
     }
 }
 
-#Preview {
-    ScheduleBottomBarAccessory(selectedDay: .constant(Day(date: Date())))
-}
+//#Preview {
+//    NavigationStack {
+//        TabView {
+//            Tab {
+//                Text("Filler")
+//            }
+//        }
+//        ScheduleBottomBarAccessory(selectedDay: .constant(Day(date: Date())))
+//    }
+//    .tabViewBottomAccessory { ScheduleBottomBarAccessory(selectedDay: .constant(Day(date: Date()))) }
+//}

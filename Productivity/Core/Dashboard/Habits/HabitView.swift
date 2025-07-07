@@ -24,21 +24,24 @@ struct HabitView: View{
         NavigationStack {
             List {
                 ForEach($habitVM.habitItems) { $habit in
-                    Section(habitCategorizer.categorize(habitText: habit.title)) {
-                        // TEMP
-                        NavigationLink() {
-                            HabitDetailView(habit: habit)
-                        } label: {
-                            HabitCardView(habit: $habit)
-                                .environmentObject(habitVM)
-                        }
-                        .frame(height: 60)
-                        
-                        // END TEMP
-                    }
+                    HabitCardView(habit: $habit)
+                        .environmentObject(habitVM)
+//                    Section(habitCategorizer.categorize(habitText: habit.title)) {
+//                        // TEMP
+//                        NavigationLink() {
+//                            HabitDetailView(habit: habit)
+//                        } label: {
+//                            HabitCardView(habit: $habit)
+//                                .environmentObject(habitVM)
+//                        }
+//                        .frame(height: 60)
+//                        
+//                        // END TEMP
+//                    }
                     
                 }
             }
+            .listRowSpacing(8)
             .navigationTitle("Habits")
             .toolbar() {
                 ToolbarItem(placement: .topBarTrailing) {
