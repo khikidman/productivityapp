@@ -5,6 +5,7 @@
 //  Created by Khi Kidman on 7/11/25.
 //
 
+import SwiftUI
 
 struct TimerBottomBarAccessory: View {
     @Binding var timerTypeOption: TimerTypeOption
@@ -22,24 +23,27 @@ struct TimerBottomBarAccessory: View {
         )
         
         HStack {
-            Menu {
+            Picker("Type", selection: $timerTypeOption){
                 ForEach(TimerTypeOption.allCases, id: \.self) { type in
-                    Button(action: { timerTypeOption = type }) {
-                        Text(type.typeName)
-                    }
+                    //                    Button(action: { withAnimation { timerTypeOption = type } }) {
+                    Text(type.typeName).tag(type)
+                    //                    }
                 }
-            } label: {
-                HStack {
-                    Text(timerTypeOption.typeName)
-                        .fontWeight(.medium)
-                    Image(systemName: "chevron.up.chevron.down")
-                        .font(.system(size: 10))
-                        .fontWeight(.medium)
-                }
-                .padding(.horizontal, 10)
+                //            } label: {
+                //                HStack {
+                //                    Text(timerTypeOption.typeName)
+                //                        .fontWeight(.medium)
+                ////                    Image(systemName: "chevron.up.chevron.down")
+                ////                        .font(.system(size: 10))
+                ////                        .fontWeight(.medium)
+                //                }
+                //                .padding(.horizontal, 10)
             }
+            .pickerStyle(.menu)
+            .foregroundStyle(.pink)
+            .tint(.pink)
             .frame(maxWidth: .infinity)
-            .glassEffect(.regular.interactive())
+            .padding(.horizontal, 20)
             
             HStack {
                 Picker("Minutes", selection: minutesBinding) {

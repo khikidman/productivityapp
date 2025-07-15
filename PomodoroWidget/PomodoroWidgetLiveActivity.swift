@@ -9,46 +9,55 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct PomodoroWidgetAttributes: ActivityAttributes {
+struct PomodoroAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
-        // Dynamic stateful properties about your activity go here!
-        var emoji: String
+        var currentTime: TimeInterval
+        var isRunning: Bool
     }
 
-    // Fixed non-changing properties about your activity go here!
-    var name: String
+    var countdown: TimeInterval
 }
 
-struct PomodoroWidgetLiveActivity: Widget {
+struct PomodoroActivityConfiguration: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: PomodoroWidgetAttributes.self) { context in
+        ActivityConfiguration(for: PomodoroAttributes.self) { context in
             // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
+            VStack(spacing: 8) {
+                let remaining = max(context.state.currentTime, 0)
+                let minutes = Int(remaining) / 60
+                let seconds = Int(remaining) % 60
+                Text("\(minutes) min \(seconds) sec left")
+                    .font(.headline)
+                ProgressView(value: (context.attributes.countdown - remaining) / context.attributes.countdown)
+                    .progressViewStyle(LinearProgressViewStyle(tint: .red))
             }
+            .padding()
             .activityBackgroundTint(Color.cyan)
             .activitySystemActionForegroundColor(Color.black)
-
         } dynamicIsland: { context in
-            DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
+            let remaining = max(context.state.currentTime, 0)
+            let minutes = Int(remaining) / 60
+            let seconds = Int(remaining) % 60
+
+            return DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+                    Image(systemName: "clock")
+                        .font(.title2)
+                }
+                DynamicIslandExpandedRegion(.center) {
+                    Text("\(minutes) min \(seconds) sec")
+                        .font(.headline)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
-                    // more content
+                    Image(systemName: context.state.isRunning ? "pause.fill" : "play.fill")
+                        .font(.title2)
                 }
             } compactLeading: {
-                Text("L")
+                Image(systemName: "clock")
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                Text("\(seconds)s")
             } minimal: {
-                Text(context.state.emoji)
+                Text("\(minutes) min")
             }
             .widgetURL(URL(string: "http://www.apple.com"))
             .keylineTint(Color.red)
@@ -56,25 +65,25 @@ struct PomodoroWidgetLiveActivity: Widget {
     }
 }
 
-extension PomodoroWidgetAttributes {
-    fileprivate static var preview: PomodoroWidgetAttributes {
-        PomodoroWidgetAttributes(name: "World")
+extension PomodoroAttributes {
+    fileprivate static var preview: PomodoroAttributes {
+        PomodoroAttributes(countdown: 1500)
     }
 }
 
-extension PomodoroWidgetAttributes.ContentState {
-    fileprivate static var smiley: PomodoroWidgetAttributes.ContentState {
-        PomodoroWidgetAttributes.ContentState(emoji: "😀")
-     }
-     
-     fileprivate static var starEyes: PomodoroWidgetAttributes.ContentState {
-         PomodoroWidgetAttributes.ContentState(emoji: "🤩")
-     }
+extension PomodoroAttributes.ContentState {
+    fileprivate static var running: PomodoroAttributes.ContentState {
+        PomodoroAttributes.ContentState(currentTime: 900, isRunning: true)
+    }
+
+    fileprivate static var paused: PomodoroAttributes.ContentState {
+        PomodoroAttributes.ContentState(currentTime: 600, isRunning: false)
+    }
 }
 
-#Preview("Notification", as: .content, using: PomodoroWidgetAttributes.preview) {
-   PomodoroWidgetLiveActivity()
+#Preview("Notification", as: .content, using: PomodoroAttributes.preview) {
+    PomodoroActivityConfiguration()
 } contentStates: {
-    PomodoroWidgetAttributes.ContentState.smiley
-    PomodoroWidgetAttributes.ContentState.starEyes
+    PomodoroAttributes.ContentState.running
+    PomodoroAttributes.ContentState.paused
 }

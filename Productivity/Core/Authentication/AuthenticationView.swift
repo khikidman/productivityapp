@@ -53,10 +53,8 @@ struct AuthenticationView: View {
             .shadow(radius: 5)
                 
             Spacer()
-            Spacer()
         }
         .padding(35)
-        .navigationTitle("Sign In")
     }
 }
 

@@ -181,8 +181,8 @@ struct ProfileView: View {
                         .font(.headline)
                 }
                 .alert("User ID", isPresented: $showLinkPopup) {
-                    Button("Cancel", role: .cancel) { }
-                    Button("Copy") {
+                    Button("Cancel", role: .close) { }
+                    Button("Copy", role: .confirm) {
                         if let user = viewModel.user {
                             UIPasteboard.general.string = "Hello world"
                         }

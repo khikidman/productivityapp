@@ -28,7 +28,9 @@ struct RootView: View {
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {
                 AuthenticationView(showSignInView: $showSignInView)
+                    .background(Material.thin)
             }
+            
         }
         .tint(.pink)
     }

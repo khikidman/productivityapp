@@ -13,6 +13,6 @@ struct PomodoroWidgetBundle: WidgetBundle {
     var body: some Widget {
         PomodoroWidget()
         PomodoroWidgetControl()
-        PomodoroWidgetLiveActivity()
+        PomodoroActivityConfiguration()
     }
 }

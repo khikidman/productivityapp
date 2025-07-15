@@ -46,7 +46,6 @@ struct TimerView: View {
                     .trim(from: 0, to: elapsed / timerDuration)
                     .stroke(
                         Color.pink,
-                        // 1
                         style: StrokeStyle(
                             lineWidth: 10,
                             lineCap: .round
@@ -58,7 +57,9 @@ struct TimerView: View {
             Button {
                 if !timerIsRunning {
                     timerIsRunning = true
-                    startPomodoro()
+                    if elapsed == 0 {
+                        startPomodoro()
+                    }
                 } else {
                     timerIsRunning = false
                 }
@@ -91,9 +92,11 @@ struct TimerView: View {
     
     func startPomodoro() {
         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if self.elapsed < timerDuration {
-                withAnimation(.smooth) {
-                    self.elapsed += 1
+            if self.elapsed < self.timerDuration {
+                if self.timerIsRunning {
+                    withAnimation(.smooth) {
+                        self.elapsed += 1
+                    }
                 }
             } else {
                 self.elapsed = timerDuration

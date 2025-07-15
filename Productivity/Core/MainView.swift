@@ -16,71 +16,82 @@ struct MainView: View {
     @Binding var showSignInView: Bool
     @State private var selectedTab: MainTab = .dashboard
     
+    @State var timerDuration: TimeInterval = 20 * 60
+    @State var breakDuration: TimeInterval = 4 * 60
+    @State var timerType: TimerTypeOption = .pomodoro
+    
     @State var selectedDay: Day = Day.init(date: Date())
     
     var body: some View {
         TabView (selection: $selectedTab) {
             Tab(value: MainTab.dashboard) {
-                    NavigationStack {
-                        DashboardView(selectedTab: $selectedTab)
-                    }
-                } label: {
-                    Label("Dashboard", systemImage: "house")
+                NavigationStack {
+                    DashboardView(selectedTab: $selectedTab)
                 }
-                
+            } label: {
+                Label("Dashboard", systemImage: "house")
+            }
+            
             Tab(value: MainTab.schedule) {
+                NavigationStack {
+                    NewScheduleView(selectedDay: $selectedDay)
+                        .environmentObject(todoVM)
+                        .environmentObject(habitVM)
+                }
+            } label: {
+                Label("Schedule", systemImage: "calendar.day.timeline.left")
+            }
+            
+            if (!showSignInView) {
+                Tab(value: MainTab.profile) {
                     NavigationStack {
-                        NewScheduleView(selectedDay: $selectedDay)
-                            .environmentObject(todoVM)
-                            .environmentObject(habitVM)
+                        ProfileView()
                     }
                 } label: {
-                    Label("Schedule", systemImage: "calendar.day.timeline.left")
+                    Label("Profile", systemImage: "person.fill")
                 }
-                
-                if (!showSignInView) {
-                    Tab(value: MainTab.settings) {
-                        NavigationStack {
-                            ProfileView()
-                        }
-                    } label: {
-                        Label("Settings", systemImage: "gear")
-                    }
-                }
-                
-            Tab(value: MainTab.search, role: .search) {
+            }
+            
+            if (selectedTab == .schedule || selectedTab == .tasks || selectedTab == .search || selectedTab == .profile) {
+                Tab(value: MainTab.search, role: .search) {
                     NavigationStack {
                         SearchView()
                     }
                 }
-                
-                
-                
-            }
-            .tabViewStyle(.automatic)
-            .tint(.pink)
-            .backgroundStyle(.windowBackground)
-            .tabBarMinimizeBehavior(.onScrollDown)
-            .tabViewBottomAccessory {
-                switch selectedTab {
-                case .dashboard:
-                    TabBarBottomAccessory()
-                case .tasks:
-                    Text("Temp")
-                case .settings:
-                    Text("Temp")
-                case .schedule:
-                    ScheduleBottomBarAccessory(selectedDay: $selectedDay)
-                case .search:
-                    Text("Temp")
+            } else if (selectedTab == .dashboard || selectedTab == .timer) {
+                Tab(value: MainTab.timer, role: .search) {
+                    TimerView(timerType: $timerType, timerDuration: $timerDuration, breakDuration: $breakDuration)
+                } label: {
+                    Label("Action", systemImage: "timer")
                 }
             }
+        }
+        .tabViewStyle(.automatic)
+        .tint(.pink)
+        .backgroundStyle(.windowBackground)
+        .tabBarMinimizeBehavior(.onScrollDown)
+        .tabViewBottomAccessory {
+            switch selectedTab {
+            case .dashboard:
+                TabBarBottomAccessory()
+            case .tasks:
+                Text("Temp")
+            case .profile:
+                Text("Temp")
+            case .schedule:
+                ScheduleBottomBarAccessory(selectedDay: $selectedDay)
+            case .search:
+                Text("Temp")
+            case .timer:
+                TimerBottomBarAccessory(timerTypeOption: $timerType, timerDuration: $timerDuration, breakDuration: $breakDuration)
+            }
+        }
         
     }
 }
 
 enum MainTab: Hashable {
-    case dashboard, tasks, settings, schedule, search
+    case dashboard, tasks, profile, schedule, search, timer
 }
 
 #Preview {
@@ -88,4 +99,3 @@ enum MainTab: Hashable {
         .environmentObject(TodoViewModel())
         .environmentObject(HabitViewModel())
 }
-
